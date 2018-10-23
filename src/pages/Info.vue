@@ -6,7 +6,7 @@
             @goBack="goBack">
 
         <template slot="card-header-actions">
-            <el-button plain>Удалить контрагента</el-button>
+            <el-button plain @click="deleteContr">Удалить контрагента</el-button>
             <el-button plain @click="$router.push('/create')">Добавить филиал</el-button>
         </template>
 
@@ -64,6 +64,22 @@
         methods: {
             goBack(){
                 this.$router.go(-1)
+            },
+            deleteContr(){
+                this.$confirm('Вы собираетесь удалить контрагента и все филиалы. Продолжить?', 'Внимание!', {
+                    confirmButtonText: 'Удалить',
+                    cancelButtonText: 'Отмена',
+                }).then(() => {
+                    this.$message({
+                        type: 'success',
+                        message: 'Delete completed'
+                    });
+                }).catch(() => {
+                    this.$message({
+                        type: 'info',
+                        message: 'Delete canceled'
+                    });
+                });
             }
         }
     }
