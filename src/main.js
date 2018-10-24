@@ -9,6 +9,8 @@ import locale from 'upoint-vue-ui/locale/lang/ru-RU'
 
 import 'upoint-vue-ui/assets/css/main.css'
 
+import './assets/main.css'
+
 
 Vue.use(uPoint, {size: 'mini', locale});
 
