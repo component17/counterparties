@@ -6,7 +6,7 @@
                 <div id="left">
                     <el-card-tree title="Список контрагентов">
                         <template slot="card-tree-header-actions">
-                            <el-button type="primary" @click="$router.push('/create')">Добавить</el-button>
+                            <el-button type="primary" @click="$router.push('/create')"><i class="mdi mdi-plus"></i>Создать</el-button>
                         </template>
                         <el-tree
                                 :data="data6"
@@ -16,6 +16,21 @@
                                 @node-click="select"
                                 :filter-node-method="filter"
                                 ref="tree">
+                             <span class="custom-tree-node" slot-scope="{ node, data }">
+        <span>{{ node.label }}</span>
+        <div class="treeButtons">
+          <el-button
+                  type="text"
+                  size="mini">
+            <i class="mdi mdi-pencil"></i>
+          </el-button>
+          <el-button
+                  type="text"
+                  size="mini">
+            <i class="mdi mdi-folder-plus"></i>
+          </el-button>
+        </div>
+      </span>
                         </el-tree>
                         <template slot="card-tree-footer">
                             <el-input placehoder="Поиск" prefix-icon="el-icon-search" v-model="filterText"/>
@@ -34,26 +49,25 @@
 <script>
     export default {
         name: 'app',
-        components: {
-        },
+        components: {},
         watch: {
             filterText(val) {
                 this.$refs.tree.filter(val);
             }
         },
-        data(){
-            return{
+        data() {
+            return {
                 filterText: '',
                 data6: [{
                     label: 'Level one 1',
                     children: [
                         {
-                        label: 'Level two 1-1',
-                        children: [
-                            {
-                            label: 'Level three 1-1-1'
-                            }
-                        ]
+                            label: 'Level two 1-1',
+                            children: [
+                                {
+                                    label: 'Level three 1-1-1'
+                                }
+                            ]
                         }
                     ]
                 }, {
@@ -67,7 +81,7 @@
                         label: 'Level two 2-2',
                         children: [{
                             label: 'Level three 2-2-1'
-                        },{
+                        }, {
                             label: 'Level three 2-2-2'
                         }]
                     }]
@@ -86,7 +100,7 @@
                 }
             };
         },
-        mounted(){
+        mounted() {
             this.$split(['#left', '#right'], {
                 sizes: [30, 70],
                 minSize: [350, 600],
@@ -94,10 +108,10 @@
             })
         },
         methods: {
-            goBack(){
+            goBack() {
                 console.log('click back btn')
             },
-            select(data){
+            select(data) {
                 this.$router.push('/info/' + data.$treeNodeId)
             },
             filter(value, data) {
@@ -111,11 +125,12 @@
 </script>
 
 <style lang="scss" scoped>
-    .content{
+    .content {
         display: flex;
         flex-grow: 2;
     }
-    #left, #right{
+
+    #left, #right {
         display: flex;
         flex-direction: column;
         flex-grow: 2;

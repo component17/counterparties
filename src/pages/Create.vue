@@ -7,16 +7,6 @@
             showFooter
     >
         <div class="newCompany">
-            <el-collapse-transition>
-                <div class="newCompany__search" v-show="showSearch">
-                    <div class="newCompany__search-title">
-                        <h2>Автоматическое заполнение реквизитов контрагента</h2>
-                    </div>
-                    <div class="newCompany__search-input">
-                        <el-input placeholder="Введите название в свободной форме, адрес, ИНН или ОГРН"/>
-                    </div>
-                </div>
-            </el-collapse-transition>
             <div class="newCompany__search">
                 <div class="newCompany__search-title">
                     <h2>Автоматическое заполнение реквизитов контрагента</h2>
