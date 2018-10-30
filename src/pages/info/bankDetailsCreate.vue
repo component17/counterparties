@@ -32,19 +32,19 @@
                     </el-form-item>
                     <el-form-item label="Корсчет" required>
                         <div class="form__inputsOne">
-                            <el-input type="number"/>
+                            <el-input/>
                         </div>
                         <span class="formInfo" v-if="completed">в ОНБ ОТДЕЛЕНИЕ КЕМЕРОВО</span>
                     </el-form-item>
                     <el-form-item label="Рег. номер">
                         <div class="form__inputsOne">
-                            <el-input type="number"/>
+                            <el-input/>
                         </div>
                         <span class="formInfo formInfo-red" v-if="completed">на сайте ЦБ РФ</span>
                     </el-form-item>
                     <el-form-item label="Рассчетный счет">
                         <div class="form__inputsOne">
-                            <el-input type="number"/>
+                            <el-input/>
                         </div>
                     </el-form-item>
                     <el-form-item label="Валюта">
