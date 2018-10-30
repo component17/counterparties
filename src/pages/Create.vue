@@ -1,7 +1,7 @@
 <template>
     <el-card-module
             showHeader
-            title="Новый контрагент"
+            title="Новый контрагент/Редактировать данные контрагента"
             btnBack
             @goBack="goBack"
             showFooter
@@ -193,8 +193,8 @@
         </div>
 
         <template slot="card-footer-actions">
-            <el-button plain>Отмена</el-button>
-            <el-button type="primary">Создать</el-button>
+            <el-button type="primary" icon="mdi mdi-content-save">Создать контрагента</el-button>
+            <el-button type="primary" icon="mdi mdi-content-save">Сохранить изменения</el-button>
         </template>
 
     </el-card-module>

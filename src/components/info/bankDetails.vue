@@ -48,7 +48,8 @@
             </el-pagination>
         </template>
         <template slot="card-footer-actions">
-            <el-button type="primary" @click="$router.push('/info/:id/bank-details/create')"><i class="mdi mdi-account-plus"></i>Создать новый расчетный счет</el-button>
+            <el-button type="primary" @click="$router.push('/info/:id/bank-details/create')"><i class="mdi mdi-account-plus"></i>Создать новый расчетный счет
+            </el-button>
         </template>
     </el-card-module>
 </template>
