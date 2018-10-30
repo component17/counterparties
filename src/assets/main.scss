@@ -1,27 +1,51 @@
-.cardTemplate > .cardTemplate__head{
-  .cardTemplate__head-actions{
-    button i{
+.cardTemplate > .cardTemplate__head {
+  .cardTemplate__head-actions {
+    button i {
       margin-right: 5px;
     }
   }
 }
 
+#left{
+  .treeTemplate__head-actions{
+    button i {
+      margin-right: 5px;
+    }
+  }
+}
 .form__inputsGroup {
   display: flex;
   align-items: center;
   .el-input:not(:last-child) {
     margin-right: 10px;
   }
+
 }
+.cardTemplate__body{
+  .el-form-item__content{
+    .form__inputsOne {
+     .el-input {
+        max-width: calc(50% - 5px);
+      }
+      .el-select {
+        width: 180px;
+      }
+    }
+  }
+}
+
 
 .form__inputsGroupSmall {
   width: 100%;
+  min-width: 180px;
   .el-input:last-child {
-    width: 60%;
+    width: 180px;
+    min-width: 180px;
   }
 }
-.el-form-item{
-  .el-form-item__content{
+
+.el-form-item {
+  .el-form-item__content {
     .form__smallInput {
       display: flex;
       align-items: center;
@@ -32,11 +56,12 @@
         margin-left: 10px;
       }
       .el-date-editor {
-        i{
+        i {
           margin-left: 0;
         }
       }
     }
+
   }
 }
 
@@ -97,8 +122,75 @@
   }
 }
 
-.el-form-item--mini .el-form-item__label{
+.el-form-item--mini .el-form-item__label {
   line-height: 1.5;
+}
+
+/*----Селект в таблице-----*/
+.cellSelect {
+  .cell {
+    padding: 2px 0 2px 10px !important;
+    display: flex;
+    align-items: center;
+    .el-select {
+      width: 100%;
+    }
+    .el-input__inner {
+      border: none;
+      border-radius: 0;
+      padding: 0;
+      background-color: transparent;
+    }
+  }
+}
+
+/*----Table----*/
+.el-table--mini td, .el-table--mini th {
+  padding: 2px 0;
+  height: 37px;
+  min-height: 37px;
+  .cell {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    word-break: break-all;
+    line-height: 23px;
+    padding-left: 10px;
+    padding-right: 10px;
+    width: 100%;
+  }
+}
+
+/*----Check Table-----*/
+.el-table-column--selection {
+  .cell {
+    padding: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+}
+
+/*----Table buttons----*/
+.cell-buttons {
+  button {
+    padding: 0;
+    font-size: 16px;
+    color: #888888;
+    transition: 0.3s ease;
+    &:hover {
+      color: #241f2e;
+    }
+  }
+}
+
+/*---Кнопки внизу редактирования контакта---*/
+.cardNewContacts {
+  .cardTemplate__footer {
+    button i {
+      margin-right: 5px;
+    }
+  }
 }
 
 /*---Новый контрагент---*/
@@ -119,7 +211,6 @@
   }
   &__search {
     padding: 10px;
-    border-radius: 4px;
     background-color: #fff0d7;
     margin-bottom: 15px;
     &-title {
@@ -151,7 +242,7 @@
       margin-left: 10px;
     }
   }
-  &__form{
+  &__form {
     padding: 0 10px 0 10px;
   }
 }
@@ -159,7 +250,6 @@
 /*---Информация о контрагенте----*/
 .newCompany__formInfo {
   padding: 15px;
-  border-radius: 4px;
   background-color: #f2f2f2;
   h2 {
     margin-bottom: 15px;
@@ -181,7 +271,13 @@
 
 /*---Новый контакт---*/
 .newContacts {
-  padding: 15px;
+  &__search {
+    padding: 10px;
+    background-color: #fff0d7;
+    &-title {
+      margin-bottom: 5px;
+    }
+  }
   &__head {
     display: flex;
     align-items: center;
@@ -197,7 +293,8 @@
     }
   }
   .el-form-item__content {
-    width: 470px;
+    max-width: 560px;
+    width: 100%;
   }
   .formItem__add {
     display: flex;
@@ -205,23 +302,24 @@
     flex-wrap: wrap;
     position: relative;
     &-button {
-      position: absolute;
-      left: calc(100% + 10px);
-      width: 100%;
-      top: 0;
+      margin-top: 20px;
     }
     &-inputs {
       flex-basis: 100%;
       position: relative;
-      margin-top: 10px;
+      margin-top: 20px;
       button {
         position: absolute;
         left: calc(100% + 10px);
         top: 0;
       }
     }
+    & > *:first-child {
+      margin-top: 0;
+    }
   }
   &__form {
+    padding: 10px;
     h3 {
       margin-bottom: 20px;
     }
@@ -230,7 +328,6 @@
 
 /*---Новый расчетный счет---*/
 .newBanks {
-  padding: 15px;
   &__head {
     display: flex;
     align-items: center;
@@ -247,12 +344,13 @@
   }
   &__search {
     padding: 15px;
-    border-radius: 4px;
     background-color: #fff0d7;
-    margin-bottom: 15px;
     &-title {
       margin-bottom: 10px;
     }
+  }
+  &__form {
+    padding: 10px;
   }
   &__button {
     display: flex;
@@ -263,7 +361,8 @@
     }
   }
   .el-form-item__content {
-    width: 470px;
+    max-width: 560px;
+    width: 100%;
     .el-select {
       width: 100%;
     }
@@ -282,16 +381,16 @@
 }
 
 /*---Табы----*/
-.el-tabs{
+.el-tabs {
   display: flex;
   flex-direction: column;
   flex-grow: 2;
-  .el-tabs__content{
+  .el-tabs__content {
     display: flex;
     flex-direction: column;
     flex-grow: 2;
     padding: 0;
-    .el-tab-pane{
+    .el-tab-pane {
       display: flex;
       flex-direction: column;
       flex-grow: 2;
@@ -300,25 +399,25 @@
 }
 
 /*----Главная иноформация о контрагенте----*/
-.mainInfo{
-  padding:15px 10px 0 10px;
-  &__actions{
+.mainInfo {
+  padding: 15px 10px 0 10px;
+  &__actions {
     display: flex;
     align-items: center;
-    margin-bottom: 15px;
+    margin-bottom: 5px;
     button i {
       margin-right: 5px;
     }
   }
-  &__info{
-    &-item{
+  &__info {
+    &-item {
       display: flex;
       align-items: flex-start;
       padding: 5px 0;
       border-bottom: 1px solid #dddddd;
       min-height: 28px;
       position: relative;
-      h2{
+      h2 {
         font-size: 12px;
         font-weight: 500;
         font-style: normal;
@@ -329,7 +428,7 @@
         width: 200px;
         min-width: 200px;
       }
-      p{
+      p {
         font-size: 12px;
         font-weight: normal;
         font-style: normal;
@@ -338,18 +437,199 @@
         letter-spacing: normal;
         color: #515254;
       }
-      .form__tags{
+      .form__tags {
         margin-top: 5px;
         margin-bottom: 5px;
       }
-      .pointMap{
+      .pointMap {
         position: absolute;
         right: 10px;
         line-height: 2.33;
       }
     }
-    &-item:last-child{
+    &-item:last-child {
       border-bottom: none;
     }
+  }
+}
+
+/*---Контактные лица---*/
+.contanctFaces {
+  .cardTemplate__head-actions {
+    flex-grow: 2;
+    display: flex;
+    .el-input {
+      width: 300px;
+      margin-right: auto;
+    }
+  }
+  .cardTemplate__footer-actions {
+    button i {
+      margin-right: 5px;
+    }
+  }
+  .contanctFacesName{
+    cursor: pointer;
+  }
+}
+
+/*--Информация о сотруднике(dialog)--*/
+.contanctFaces__dialog {
+  &-info {
+    div {
+      display: flex;
+      margin-bottom: 20px;
+      font-size: 12px;
+      font-weight: normal;
+      font-style: normal;
+      font-stretch: normal;
+      line-height: 1.5;
+      letter-spacing: normal;
+      color: #515254;
+      .mdi {
+        margin-right: 10px;
+      }
+      & > span {
+        font-size: 12px;
+        font-weight: normal;
+        font-style: normal;
+        font-stretch: normal;
+        line-height: 1.5;
+        letter-spacing: normal;
+        color: #888888;
+        margin-left: 5px;
+      }
+    }
+  }
+  .el-dialog__footer {
+    button i {
+      margin-right: 5px;
+    }
+  }
+}
+
+/*---Банковские реквизиты----*/
+.banksInfo {
+  .cardTemplate__head-actions {
+    flex-grow: 2;
+    display: flex;
+    .el-input {
+      width: 300px;
+      margin-right: auto;
+    }
+  }
+  .cardTemplate__footer-actions {
+    button i {
+      margin-right: 5px;
+    }
+  }
+}
+
+/*---Локации---*/
+.location {
+  .cardTemplate__head-actions {
+    flex-grow: 2;
+    display: flex;
+    .el-input {
+      width: 300px;
+      margin-right: auto;
+    }
+  }
+  .cardTemplate__footer-actions {
+    button i {
+      margin-right: 5px;
+    }
+  }
+}
+/*---Новый Локации---*/
+.newLocation {
+  &__head {
+    display: flex;
+    align-items: center;
+    margin-bottom: 15px;
+    &-back {
+      margin-right: 10px;
+    }
+    &-save {
+      margin-left: auto;
+      i {
+        margin-right: 5px;
+      }
+    }
+  }
+  &__search {
+    padding: 10px;
+    background-color: #fff0d7;
+    margin-bottom: 15px;
+    &-title {
+      margin-bottom: 5px;
+    }
+  }
+  &__button {
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+    button {
+      width: 100%;
+    }
+  }
+  .el-form-item__content {
+    width: 560px;
+    .el-select {
+      width: 100%;
+    }
+    .el-date-editor {
+      width: 100%;
+    }
+    button {
+      i {
+        margin-right: 5px;
+      }
+    }
+    .el-tooltip {
+      margin-left: 10px;
+    }
+  }
+  &__form {
+    padding: 0 10px 0 10px;
+  }
+}
+.newLocationCard{
+  .cardTemplate__footer-actions{
+    button i {
+      margin-right: 5px;
+    }
+  }
+}
+
+.custom-tree-node {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 14px;
+  padding-right: 8px;
+}
+.treeButtons{
+  button{
+    i{
+      font-size: 12px;
+      font-weight: normal;
+      font-style: normal;
+      font-stretch: normal;
+      line-height: normal;
+      letter-spacing: normal;
+      text-align: center;
+      color: #dddddd;
+      transition: 0.3s ease;
+    }
+    &:hover{
+      i{
+        color: #515254;
+      }
+    }
+  }
+  .el-button + .el-button{
+    margin-left:5px;
   }
 }
