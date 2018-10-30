@@ -53,7 +53,7 @@
             </el-pagination>
         </template>
         <template slot="card-footer-actions">
-            <el-button type="primary"><i class="mdi mdi-account-plus"></i>Создать новое контактное лицо</el-button>
+            <el-button type="primary" @click="$router.push('/info/:id/contact-faces/create')"><i class="mdi mdi-account-plus"></i>Создать новое контактное лицо</el-button>
         </template>
         <!--Информация о сотруднике-->
         <el-dialog

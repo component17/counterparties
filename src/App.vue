@@ -6,7 +6,7 @@
                 <div id="left">
                     <el-card-tree title="Список контрагентов">
                         <template slot="card-tree-header-actions">
-                            <el-button type="primary" @click="$router.push('/create')"><i class="mdi mdi-plus"></i>Создать</el-button>
+                            <el-button type="primary" icon="mdi mdi-plus" @click="$router.push('/create')">Создать</el-button>
                         </template>
                         <el-tree
                                 :data="data6"
