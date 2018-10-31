@@ -19,7 +19,10 @@ Vue.config.productionTip = false;
 
 upoint.db.connect().then(() => {
     r.tableCreate('counterparties').run(conn, () => {
-        console.log('Table create')
+        console.log('Table create counterparties')
+    });
+    r.tableCreate('counterparties-faces').run(conn, () => {
+        console.log('Table create counterparties-faces')
     });
 }).finally(() => {
     new Vue({

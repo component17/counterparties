@@ -6,10 +6,11 @@
                 <div id="left">
                     <el-card-tree title="Список контрагентов">
                         <template slot="card-tree-header-actions">
-                            <el-button type="primary" icon="mdi mdi-plus" @click="$router.push('/create')">Создать</el-button>
+                            <el-button type="primary" icon="mdi mdi-plus" @click="$router.push('/create')">Создать
+                            </el-button>
                         </template>
                         <el-tree
-                                :data="data6"
+                                :data="tree"
                                 node-key="id"
                                 :indent="26"
                                 :expand-on-click-node="false"
@@ -17,20 +18,20 @@
                                 :filter-node-method="filter"
                                 ref="tree">
                              <span class="custom-tree-node" slot-scope="{ node, data }">
-        <span>{{ node.label }}</span>
-        <div class="treeButtons">
-          <el-button
-                  type="text"
-                  size="mini">
-            <i class="mdi mdi-pencil"></i>
-          </el-button>
-          <el-button
-                  type="text"
-                  size="mini">
-            <i class="mdi mdi-folder-plus"></i>
-          </el-button>
-        </div>
-      </span>
+                            <span>{{ data.name_short }}</span>
+                            <div class="treeButtons">
+                              <el-button
+                                      type="text"
+                                      size="mini">
+                                <i class="mdi mdi-pencil"></i>
+                              </el-button>
+                              <el-button
+                                      type="text"
+                                      size="mini">
+                                <i class="mdi mdi-folder-plus"></i>
+                              </el-button>
+                            </div>
+                            </span>
                         </el-tree>
                         <template slot="card-tree-footer">
                             <el-input placehoder="Поиск" prefix-icon="el-icon-search" v-model="filterText"/>
@@ -47,6 +48,8 @@
 </template>
 
 <script>
+    import arrayToTree from 'array-to-tree'
+
     export default {
         name: 'app',
         components: {},
@@ -57,72 +60,39 @@
         },
         data() {
             return {
+                tree: [],
+
+
                 filterText: '',
-                data6: [{
-                    label: 'Level one 1',
-                    children: [
-                        {
-                            label: 'Level two 1-1',
-                            children: [
-                                {
-                                    label: 'Level three 1-1-1'
-                                }
-                            ]
-                        }
-                    ]
-                }, {
-                    label: 'Level one 2',
-                    children: [{
-                        label: 'Level two 2-1',
-                        children: [{
-                            label: 'Level three 2-1-1'
-                        }]
-                    }, {
-                        label: 'Level two 2-2',
-                        children: [{
-                            label: 'Level three 2-2-1'
-                        }, {
-                            label: 'Level three 2-2-2'
-                        }]
-                    }]
-                }, {
-                    label: 'Level one 3',
-                }, {
-                    label: 'Level one 4',
-                }, {
-                    label: 'Level one 5',
-                }, {
-                    label: 'Level one 6',
-                }],
+
                 defaultProps: {
                     children: 'children',
                     label: 'label'
                 }
             };
         },
-        created(){
-            this.$store.dispatch('contr/getList')
+        created() {
+            this.$store.dispatch('contr/getList').then((data) => {
+                this.tree = arrayToTree(data);
+            })
         },
         mounted() {
             this.$split(['#left', '#right'], {
                 sizes: [30, 70],
                 minSize: [350, 600],
                 gutterSize: 8,
-            })
-
-            console.log(this.$store.state.contr.list, this.$store.state.contr.tree)
+            });
         },
         methods: {
             goBack() {
                 console.log('click back btn')
             },
             select(data) {
-                this.$router.push('/info/' + data.$treeNodeId)
+                this.$router.push('/info/' + data.id)
             },
             filter(value, data) {
-                console.log(value, data);
                 if (!value) return true;
-                let str = data.label.toLowerCase();
+                let str = data.name_short.toLowerCase();
                 return str.indexOf(value.toLowerCase()) !== -1;
             }
         }

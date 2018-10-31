@@ -27,9 +27,25 @@
                 </div>
             </div>
             <div class="newCompany__form">
-                <el-form label-width="200px" label-position="left" v-if="typeContractor === 'LEGAL'">
+                <el-form label-width="200px" label-position="left">
+
+                    <el-form-item label="Родитель">
+                        <el-select v-model="model.parent_id" filterable :default-first-option="false">
+                            <el-option
+                                    label="Без родителя"
+                                    :value="null">
+                            </el-option>
+                            <el-option
+                                    v-for="item in $store.state.contr.list"
+                                    :key="item.id"
+                                    :label="item.name_short"
+                                    :value="item.id">
+                            </el-option>
+                        </el-select>
+                    </el-form-item>
+
                     <el-form-item label="Тип контрагента" required>
-                        <el-select v-model="typeContractor" placeholder="Тип контрагента">
+                        <el-select v-model="model.type" placeholder="Тип контрагента">
                             <el-option value="LEGAL" label="Юридическое лицо">
                                 <!--Юридическое лицо-->
                             </el-option>
@@ -38,111 +54,52 @@
                             </el-option>
                         </el-select>
                     </el-form-item>
-                    <el-form-item label="Сокращенное наименование" required>
-                        <el-input/>
+
+                    <el-form-item label="Сокращенное наименование"  required>
+                        <el-input v-model="model.name_short"/>
                     </el-form-item>
-                    <el-form-item label="Юридическое наименование" required>
-                        <el-input/>
-                    </el-form-item>
-                    <el-form-item label="Юридический адрес" required>
-                        <el-input/>
-                    </el-form-item>
-                    <el-form-item label="ОГРН / ИНН / КПП" required>
-                        <div class="form__inputsGroup">
-                            <el-input placeholder="ОГРН"/>
-                            <el-input placeholder="ИНН"/>
-                            <el-input placeholder="КПП"/>
-                        </div>
-                        <span class="formInfo" v-if="completed">Cв-во о регистрации № 77 015267558 от 20.12.2013, ИФНС 7746</span>
-                    </el-form-item>
-                    <el-form-item label="Генеральный директор">
-                        <el-input/>
-                        <span class="formInfo" v-if="completed">ИНН 325003630515</span>
-                    </el-form-item>
-                    <el-form-item label="Дата регистрации">
-                        <div class="form__smallInput">
-                            <el-date-picker
-                                    v-model="dateRegister"
-                                    type="date"
-                                    placeholder="Выберите дату">
-                            </el-date-picker>
-                        </div>
-                        <span class="formInfo" v-if="completed">Действующая организация</span>
-                    </el-form-item>
-                    <el-form-item label="Уставной капитал">
-                        <div class="form__smallInput">
-                            <el-input/>
-                            <i class="mdi mdi-currency-rub"></i>
-                        </div>
-                    </el-form-item>
-                    <el-form-item>
-                        <template slot="label">
-                            Теги
-                            <el-tooltip content="Теги используются для быстрой идентификации вида деятельности компании" placement="top">
-                                <i class="mdi mdi-help-circle"></i>
-                            </el-tooltip>
-                        </template>
-                        <div class="form__tags">
-                            <el-tag
-                                    :key="tag"
-                                    v-for="tag in dynamicTags"
-                                    closable
-                                    :disable-transitions="false"
-                                    @close="handleClose(tag)">
-                                {{tag}}
-                            </el-tag>
-                            <el-input
-                                    class="input-new-tag"
-                                    v-if="inputVisible"
-                                    v-model="inputValue"
-                                    ref="saveTagInput"
-                                    size="mini"
-                                    @keyup.enter.native="handleInputConfirm"
-                                    @blur="handleInputConfirm"
-                            >
-                            </el-input>
-                            <el-button v-else class="button-new-tag" @click="showInput" plain><i class="mdi mdi-plus"></i>Добавить тег</el-button>
-                        </div>
-                    </el-form-item>
-                </el-form>
-                <el-form label-width="200px" label-position="left" v-if="typeContractor === 'INDIVIDUAL'">
-                    <el-form-item label="Тип контрагента" required>
-                        <el-select v-model="typeContractor" placeholder="Тип контрагента">
-                            <el-option value="LEGAL" label="Юридическое лицо">
-                                Юридическое лицо
-                            </el-option>
-                            <el-option value="INDIVIDUAL" label="Физическое лицо">
-                                Физическое лицо
-                            </el-option>
-                        </el-select>
-                    </el-form-item>
-                    <el-form-item label="Наименование или ФИО" required>
-                        <el-input/>
-                    </el-form-item>
+
                     <el-form-item label="Юридическое наименование">
-                        <el-input/>
+                        <el-input v-model="model.name_full"/>
                     </el-form-item>
-                    <el-form-item label="Адрес">
-                        <el-input/>
+
+                    <el-form-item label="Юридический адрес">
+                        <el-input v-model="model.address"/>
                     </el-form-item>
+
                     <el-form-item label="ОГРН / ИНН / КПП">
                         <div class="form__inputsGroup">
-                            <el-input placeholder="ОГРН"/>
-                            <el-input placeholder="ИНН"/>
-                            <el-input placeholder="КПП"/>
+                            <el-input placeholder="ОГРН" v-model="model.ogrn"/>
+                            <el-input placeholder="ИНН" v-model="model.inn"/>
+                            <el-input placeholder="КПП" v-model="model.kpp"/>
                         </div>
                         <span class="formInfo" v-if="completed">Cв-во о регистрации № 77 015267558 от 20.12.2013, ИФНС 7746</span>
                     </el-form-item>
+
+                    <el-form-item label="Генеральный директор">
+                        <el-input v-model="model.management.name"/>
+                        <span class="formInfo" v-if="completed">ИНН 325003630515</span>
+                    </el-form-item>
+
                     <el-form-item label="Дата регистрации">
                         <div class="form__smallInput">
                             <el-date-picker
-                                    v-model="dateRegister"
+                                    v-model="model.register"
                                     type="date"
+                                    format="dd.MM.yyyy"
                                     placeholder="Выберите дату">
                             </el-date-picker>
                         </div>
                         <span class="formInfo" v-if="completed">Действующая организация</span>
                     </el-form-item>
+
+                    <!--<el-form-item label="Уставной капитал">-->
+                        <!--<div class="form__smallInput">-->
+                            <!--<el-input/>-->
+                            <!--<i class="mdi mdi-currency-rub"></i>-->
+                        <!--</div>-->
+                    <!--</el-form-item>-->
+
                     <el-form-item>
                         <template slot="label">
                             Теги
@@ -172,7 +129,77 @@
                             <el-button v-else class="button-new-tag" @click="showInput" plain><i class="mdi mdi-plus"></i>Добавить тег</el-button>
                         </div>
                     </el-form-item>
+
                 </el-form>
+
+                <!--<el-form label-width="200px" label-position="left" v-if="typeContractor === 'INDIVIDUAL'">-->
+                    <!--<el-form-item label="Тип контрагента" required>-->
+                        <!--<el-select v-model="typeContractor" placeholder="Тип контрагента">-->
+                            <!--<el-option value="LEGAL" label="Юридическое лицо">-->
+                                <!--Юридическое лицо-->
+                            <!--</el-option>-->
+                            <!--<el-option value="INDIVIDUAL" label="Физическое лицо">-->
+                                <!--Физическое лицо-->
+                            <!--</el-option>-->
+                        <!--</el-select>-->
+                    <!--</el-form-item>-->
+                    <!--<el-form-item label="Наименование или ФИО" required>-->
+                        <!--<el-input/>-->
+                    <!--</el-form-item>-->
+                    <!--<el-form-item label="Юридическое наименование">-->
+                        <!--<el-input/>-->
+                    <!--</el-form-item>-->
+                    <!--<el-form-item label="Адрес">-->
+                        <!--<el-input/>-->
+                    <!--</el-form-item>-->
+                    <!--<el-form-item label="ОГРН / ИНН / КПП">-->
+                        <!--<div class="form__inputsGroup">-->
+                            <!--<el-input placeholder="ОГРН"/>-->
+                            <!--<el-input placeholder="ИНН"/>-->
+                            <!--<el-input placeholder="КПП"/>-->
+                        <!--</div>-->
+                        <!--<span class="formInfo" v-if="completed">Cв-во о регистрации № 77 015267558 от 20.12.2013, ИФНС 7746</span>-->
+                    <!--</el-form-item>-->
+                    <!--<el-form-item label="Дата регистрации">-->
+                        <!--<div class="form__smallInput">-->
+                            <!--<el-date-picker-->
+                                    <!--v-model="dateRegister"-->
+                                    <!--type="date"-->
+                                    <!--placeholder="Выберите дату">-->
+                            <!--</el-date-picker>-->
+                        <!--</div>-->
+                        <!--<span class="formInfo" v-if="completed">Действующая организация</span>-->
+                    <!--</el-form-item>-->
+                    <!--<el-form-item>-->
+                        <!--<template slot="label">-->
+                            <!--Теги-->
+                            <!--<el-tooltip content="Теги используются для быстрой идентификации вида деятельности компании" placement="top">-->
+                                <!--<i class="mdi mdi-help-circle"></i>-->
+                            <!--</el-tooltip>-->
+                        <!--</template>-->
+                        <!--<div class="form__tags">-->
+                            <!--<el-tag-->
+                                    <!--:key="tag"-->
+                                    <!--v-for="tag in dynamicTags"-->
+                                    <!--closable-->
+                                    <!--:disable-transitions="false"-->
+                                    <!--@close="handleClose(tag)">-->
+                                <!--{{tag}}-->
+                            <!--</el-tag>-->
+                            <!--<el-input-->
+                                    <!--class="input-new-tag"-->
+                                    <!--v-if="inputVisible"-->
+                                    <!--v-model="inputValue"-->
+                                    <!--ref="saveTagInput"-->
+                                    <!--size="mini"-->
+                                    <!--@keyup.enter.native="handleInputConfirm"-->
+                                    <!--@blur="handleInputConfirm"-->
+                            <!--&gt;-->
+                            <!--</el-input>-->
+                            <!--<el-button v-else class="button-new-tag" @click="showInput" plain><i class="mdi mdi-plus"></i>Добавить тег</el-button>-->
+                        <!--</div>-->
+                    <!--</el-form-item>-->
+                <!--</el-form>-->
             </div>
             <div class="newCompany__formInfo" v-if="completed">
                 <h2>Дополнительная информация:</h2>
@@ -204,8 +231,8 @@
         </div>
 
         <template slot="card-footer-actions">
-            <el-button type="primary" icon="mdi mdi-content-save">Создать контрагента</el-button>
-            <el-button type="primary" icon="mdi mdi-content-save">Сохранить изменения</el-button>
+            <el-button type="primary" icon="mdi mdi-content-save" @click="save()">Создать контрагента</el-button>
+            <!--<el-button type="primary" icon="mdi mdi-content-save">Сохранить изменения</el-button>-->
         </template>
 
     </el-card-module>
@@ -214,18 +241,33 @@
 <script>
     export default {
         computed: {
-            model: {
-                get(){
-                    return this.$store.state.contr.model
-                },
-                set(val){
 
-                }
-            }
         },
         data() {
             return {
                 autocomplete: '',
+
+                model: {
+                    parent_id: null,
+
+                    name_full: '',
+                    name_short: '',
+                    type: 'LEGAL',
+
+                    address: '',
+
+                    inn: '',
+                    kpp: '',
+                    ogrn: '',
+
+                    management: {
+                        name: '',
+                        post: ''
+                    },
+
+                    ogrn_date: '',
+
+                },
 
                 dateRegister: '',
                 typeContractor: 'LEGAL',
@@ -237,13 +279,43 @@
             }
         },
         methods: {
+            save(){
+                if(this.model.name_short !== ''){
+                    r.table("counterparties").insert(this.model).run(conn, (err, data) => {
+                        console.log(err, data)
+                    })
+                }
+            },
+
             querySearch(queryString, cb) {
                 upoint.dadata.sug.party(this.autocomplete).then((data) => {
                     cb(data);
                 });
             },
             handleSelect(item) {
-                console.log(item);
+                let val = item.data;
+                console.log(val);
+                this.model = {
+                    parent_id: this.model.parent_id,
+
+                    name_full: val.name.full_with_opf,
+                    name_short: val.name.short,
+                    type: val.type,
+
+                    address: val.address.value,
+
+                    inn: val.inn,
+                    kpp: val.kpp,
+                    ogrn: val.ogrn,
+
+                    management: {
+                        name: val.management.name,
+                        post: val.management.post
+                    },
+
+                    register: val.state.registration_date,
+                    status: val.state.status
+                };
             },
             goBack() {
                 this.$router.go(-1)

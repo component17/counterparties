@@ -9,41 +9,41 @@
             <div class="mainInfo__info">
                 <div class="mainInfo__info-item">
                     <h2>Тип контрагента:</h2>
-                    <p>Юридическое лицо</p>
+                    <p>{{ data.type === 'LEGAL' ? 'Юридическое лицо' : 'Физическое лицо' }}</p>
                 </div>
                 <div class="mainInfo__info-item">
                     <h2>Юридическое наименование:</h2>
-                    <p>ОБЩЕСТВО С ОГРАНИЧЕННОЙ ОТВЕТСТВЕННОСТЬЮ "АГЕНТ 01"</p>
+                    <p>{{ data.name_full }}</p>
                 </div>
                 <div class="mainInfo__info-item">
                     <h2>Юридический адрес:</h2>
-                    <p>142100, Московская обл, г Подольск, пр-кт Ленина, д 144</p>
+                    <p>{{ data.address }}</p>
                     <span class="pointMap"><i class="mdi mdi-map-marker-radius"></i></span>
                 </div>
                 <div class="mainInfo__info-item">
                     <h2>ОГРН:</h2>
-                    <p>5137746213017</p>
+                    <p>{{ data.ogrn }}</p>
                 </div>
                 <div class="mainInfo__info-item">
                     <h2>ИНН:</h2>
-                    <p>7751517268</p>
+                    <p>{{ data.inn }}</p>
                 </div>
                 <div class="mainInfo__info-item">
                     <h2>КПП:</h2>
-                    <p>503601001</p>
+                    <p>{{ data.inn }}</p>
                 </div>
                 <div class="mainInfo__info-item">
-                    <h2>Генеральный директор:</h2>
-                    <p> Аскаров Эльшан Бинамин Оглы (325003630515)</p>
+                    <h2>Руководитель:</h2>
+                    <p>{{ data.management.name }} ({{ data.management.post }})</p>
                 </div>
                 <div class="mainInfo__info-item">
                     <h2>Дата регистрации:</h2>
-                    <p>19.12.2013</p>
+                    <p>{{ getTime(data.register) }}</p>
                 </div>
-                <div class="mainInfo__info-item">
-                    <h2>Уставной капитал:</h2>
-                    <p>-</p>
-                </div>
+                <!--<div class="mainInfo__info-item">-->
+                    <!--<h2>Уставной капитал:</h2>-->
+                    <!--<p>-</p>-->
+                <!--</div>-->
                 <div class="mainInfo__info-item">
                     <h2>Метки:</h2>
                     <div class="form__tags">
@@ -62,10 +62,19 @@
 </template>
 
 <script>
+    const moment = require('moment');
+    moment.locale('ru');
+
     export default {
+        props: ['data'],
         data(){
             return{
 
+            }
+        },
+        methods: {
+            getTime(timestamp){
+                return `${moment(timestamp).format('DD.MM.YYYY')} (${moment(timestamp).fromNow()})`;
             }
         }
     }

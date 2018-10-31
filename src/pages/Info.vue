@@ -1,7 +1,7 @@
 <template>
     <el-card-module
             showHeader
-            :title="`Наименование контрагента ${id}`"
+            :title="model.name_short"
             btnBack
             @goBack="goBack">
 
@@ -13,7 +13,7 @@
         <el-tabs type="border-card">
 
             <el-tab-pane label="Основные">
-                <mainInfo></mainInfo>
+                <mainInfo :data="model"></mainInfo>
             </el-tab-pane>
 
             <el-tab-pane label="Контактные лица">
@@ -48,20 +48,47 @@
         },
         data(){
             return {
-                id: ''
+                id: '',
+                model: {
+                    name_full: '',
+                    name_short: '',
+                    type: 'LEGAL',
+
+                    address: '',
+
+                    inn: '',
+                    kpp: '',
+                    ogrn: '',
+
+                    management: {
+                        name: '',
+                        post: ''
+                    },
+
+                    ogrn_date: '',
+
+                },
             }
         },
         watch: {
             '$route' (to, from) {
                 if(to.name === 'info'){
-                    this.id = to.params.id
+                    this.id = to.params.id;
+                    this.getInfo();
                 }
             }
         },
         created(){
             this.id = this.$route.params.id;
+            this.getInfo();
         },
         methods: {
+            getInfo(){
+                r.table('counterparties').get(this.id).run(conn, (err, data) => {
+                    this.model = data;
+                })
+            },
+
             goBack(){
                 this.$router.go(-1)
             },

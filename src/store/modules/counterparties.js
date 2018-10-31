@@ -4,7 +4,6 @@ const store = {
     namespaced: true,
     state: {
         list: [],
-        tree: [],
 
         model: {
             name_full: '',
@@ -24,11 +23,6 @@ const store = {
 
             ogrn_date: '',
 
-        }
-    },
-    getters: {
-        tree(state){
-            return arrayToTree(state.list);
         }
     },
     mutations: {
@@ -66,7 +60,7 @@ const store = {
                             return reject(err)
                         }
                         state.list = data;
-                        resolve()
+                        resolve(data)
                     })
                 })
             })
