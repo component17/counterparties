@@ -12,18 +12,29 @@
                     <h2>Автоматическое заполнение реквизитов контрагента</h2>
                 </div>
                 <div class="newCompany__search-input">
-                    <el-input placeholder="Введите название в свободной форме, адрес, ИНН или ОГРН"/>
+                    <!--<el-input placeholder="Введите название в свободной форме, адрес, ИНН или ОГРН"/>-->
+
+                    <el-autocomplete
+                            class="inline-input"
+                            v-model="autocomplete"
+                            :fetch-suggestions="querySearch"
+                            placeholder="Введите название в свободной форме, адрес, ИНН или ОГРН"
+                            :trigger-on-focus="false"
+                            @select="handleSelect"
+                            style="width: 100%"
+                    ></el-autocomplete>
+
                 </div>
             </div>
             <div class="newCompany__form">
-                <el-form label-width="200px" label-position="left" v-if="typeContractor === 'entity'">
+                <el-form label-width="200px" label-position="left" v-if="typeContractor === 'LEGAL'">
                     <el-form-item label="Тип контрагента" required>
                         <el-select v-model="typeContractor" placeholder="Тип контрагента">
-                            <el-option value="entity" label="Юридическое лицо">
-                                Юридическое лицо
+                            <el-option value="LEGAL" label="Юридическое лицо">
+                                <!--Юридическое лицо-->
                             </el-option>
-                            <el-option value="individual" label="Физическое лицо">
-                                Физическое лицо
+                            <el-option value="INDIVIDUAL" label="Физическое лицо">
+                                <!--Физическое лицо-->
                             </el-option>
                         </el-select>
                     </el-form-item>
@@ -94,13 +105,13 @@
                         </div>
                     </el-form-item>
                 </el-form>
-                <el-form label-width="200px" label-position="left" v-if="typeContractor === 'individual'">
+                <el-form label-width="200px" label-position="left" v-if="typeContractor === 'INDIVIDUAL'">
                     <el-form-item label="Тип контрагента" required>
                         <el-select v-model="typeContractor" placeholder="Тип контрагента">
-                            <el-option value="entity" label="Юридическое лицо">
+                            <el-option value="LEGAL" label="Юридическое лицо">
                                 Юридическое лицо
                             </el-option>
-                            <el-option value="individual" label="Физическое лицо">
+                            <el-option value="INDIVIDUAL" label="Физическое лицо">
                                 Физическое лицо
                             </el-option>
                         </el-select>
@@ -202,10 +213,22 @@
 
 <script>
     export default {
+        computed: {
+            model: {
+                get(){
+                    return this.$store.state.contr.model
+                },
+                set(val){
+
+                }
+            }
+        },
         data() {
             return {
+                autocomplete: '',
+
                 dateRegister: '',
-                typeContractor: 'entity',
+                typeContractor: 'LEGAL',
                 dynamicTags: [],
                 inputVisible: false,
                 inputValue: '',
@@ -214,6 +237,14 @@
             }
         },
         methods: {
+            querySearch(queryString, cb) {
+                upoint.dadata.sug.party(this.autocomplete).then((data) => {
+                    cb(data);
+                });
+            },
+            handleSelect(item) {
+                console.log(item);
+            },
             goBack() {
                 this.$router.go(-1)
             },

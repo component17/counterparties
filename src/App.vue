@@ -100,12 +100,17 @@
                 }
             };
         },
+        created(){
+            this.$store.dispatch('contr/getList')
+        },
         mounted() {
             this.$split(['#left', '#right'], {
                 sizes: [30, 70],
                 minSize: [350, 600],
                 gutterSize: 8,
             })
+
+            console.log(this.$store.state.contr.list, this.$store.state.contr.tree)
         },
         methods: {
             goBack() {

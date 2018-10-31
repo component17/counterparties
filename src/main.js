@@ -3,6 +3,7 @@
 import Vue from 'vue'
 import App from './App'
 import router from './router'
+import store from './store/index';
 
 import uPoint from 'upoint-vue-ui';
 import locale from 'upoint-vue-ui/locale/lang/ru-RU'
@@ -16,10 +17,16 @@ Vue.use(uPoint, {size: 'mini', locale});
 
 Vue.config.productionTip = false;
 
-/* eslint-disable no-new */
-new Vue({
-    el: '#app',
-    router,
-    components: {App},
-    template: '<App/>'
-})
+upoint.db.connect().then(() => {
+    r.tableCreate('counterparties').run(conn, () => {
+        console.log('Table create')
+    });
+}).finally(() => {
+    new Vue({
+        el: '#app',
+        router,
+        store,
+        components: {App},
+        template: '<App/>'
+    })
+});
