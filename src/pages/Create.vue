@@ -281,41 +281,70 @@
         methods: {
             save(){
                 if(this.model.name_short !== ''){
-                    r.table("counterparties").insert(this.model).run(conn, (err, data) => {
-                        console.log(err, data)
-                    })
+
+                    if(this.model.inn !== ''){
+                        r.table("counterparties").filter({inn: this.model.inn}).count().run(conn, (err, data) => {
+                            if(data > 0){
+                                this.$alert('Данная компания уже добавленна!', 'Внимание!', {
+                                    confirmButtonText: 'OK'
+                                });
+                            }
+                            else{
+                                this.addDb()
+                            }
+                        });
+                    }
+                    else{
+                        this.addDb()
+                    }
                 }
+            },
+
+            addDb(){
+                r.table("counterparties").insert(this.model).run(conn, (err, data) => {
+
+                    this.$router.push('/info/' + data.generated_keys[0])
+                })
             },
 
             querySearch(queryString, cb) {
                 upoint.dadata.sug.party(this.autocomplete).then((data) => {
-                    cb(data);
+
+                    let res = data.map((i) => {
+                        i.value = `${i.value} | ИНН: ${i.data.inn} | Адрес: ${i.data.address.value}`;
+                        return i;
+                    });
+
+                    cb(res);
                 });
             },
             handleSelect(item) {
                 let val = item.data;
                 console.log(val);
-                this.model = {
-                    parent_id: this.model.parent_id,
+                this.$nextTick(() => {
 
-                    name_full: val.name.full_with_opf,
-                    name_short: val.name.short,
-                    type: val.type,
+                    this.model = {
+                        parent_id: this.model.parent_id,
 
-                    address: val.address.value,
+                        name_full: val.name.full_with_opf,
+                        name_short: val.type === "LEGAL" ? val.name.short : val.name.full.toUpperCase(),
+                        type: val.type,
 
-                    inn: val.inn,
-                    kpp: val.kpp,
-                    ogrn: val.ogrn,
+                        address: val.address.value,
 
-                    management: {
-                        name: val.management.name,
-                        post: val.management.post
-                    },
+                        inn: val.inn,
+                        kpp: val.type === "LEGAL" ? val.kpp : '',
+                        ogrn: val.ogrn,
 
-                    register: val.state.registration_date,
-                    status: val.state.status
-                };
+                        management: {
+                            name: val.type === "LEGAL" ? val.management.name : '',
+                            post: val.type === "LEGAL" ? val.management.post : '',
+                        },
+
+                        register: val.state.registration_date,
+                        status: val.state.status
+                    };
+                });
             },
             goBack() {
                 this.$router.go(-1)
