@@ -22,12 +22,13 @@
                             :trigger-on-focus="false"
                             @select="handleSelect"
                             style="width: 100%"
+                            :disabled="is_loading_action"
                     ></el-autocomplete>
 
                 </div>
             </div>
             <div class="newCompany__form">
-                <el-form label-width="200px" label-position="left">
+                <el-form label-width="200px" label-position="left" :model="model" :rules="rules" :disabled="is_loading_action">
 
                     <el-form-item label="Родитель">
                         <el-select v-model="model.parent_id" filterable :default-first-option="false">
@@ -44,7 +45,7 @@
                         </el-select>
                     </el-form-item>
 
-                    <el-form-item label="Тип контрагента" required>
+                    <el-form-item label="Тип контрагента" required prop="type">
                         <el-select v-model="model.type" placeholder="Тип контрагента">
                             <el-option value="LEGAL" label="Юридическое лицо">
                                 <!--Юридическое лицо-->
@@ -55,7 +56,7 @@
                         </el-select>
                     </el-form-item>
 
-                    <el-form-item label="Сокращенное наименование"  required>
+                    <el-form-item label="Сокращенное наименование" required prop="name_short">
                         <el-input v-model="model.name_short"/>
                     </el-form-item>
 
@@ -67,16 +68,16 @@
                         <el-input v-model="model.address"/>
                     </el-form-item>
 
-                    <el-form-item label="ОГРН / ИНН / КПП">
+                    <el-form-item label="ОГРН / ИНН / КПП" >
                         <div class="form__inputsGroup">
                             <el-input placeholder="ОГРН" v-model="model.ogrn"/>
                             <el-input placeholder="ИНН" v-model="model.inn"/>
-                            <el-input placeholder="КПП" v-model="model.kpp"/>
+                            <el-input placeholder="КПП" v-model="model.kpp" v-if="model.type !== 'INDIVIDUAL'"/>
                         </div>
                         <span class="formInfo" v-if="completed">Cв-во о регистрации № 77 015267558 от 20.12.2013, ИФНС 7746</span>
                     </el-form-item>
 
-                    <el-form-item label="Генеральный директор">
+                    <el-form-item label="Генеральный директор" v-if="model.type !== 'INDIVIDUAL'">
                         <el-input v-model="model.management.name"/>
                         <span class="formInfo" v-if="completed">ИНН 325003630515</span>
                     </el-form-item>
@@ -163,7 +164,13 @@
         </div>
 
         <template slot="card-footer-actions">
-            <el-button type="primary" icon="mdi mdi-content-save" @click="save()">Создать контрагента</el-button>
+            <el-button
+                type="primary"
+                icon="mdi mdi-content-save"
+                :loading="is_loading_action"
+                :disabled="!model.type.length || model.name_short.length < 2"
+                @click="save()"
+            >Создать контрагента</el-button>
         </template>
 
     </el-card-module>
@@ -171,11 +178,11 @@
 
 <script>
     export default {
-        computed: {
-
-        },
+        computed: { },
+        watch: { },
         data() {
             return {
+                is_loading_action: false,
                 autocomplete: '',
 
                 model: {
@@ -207,10 +214,22 @@
                 inputValue: '',
                 completed: true,
                 showSearch: false,
+
+                rules: {
+                    type: [
+                        { required: true, message: 'Выберите тип контрагента', trigger: 'blur' }
+                    ],
+                    name_short: [
+                        { required: true, message: 'Введите наименование', trigger: ['change' ,'blur'] },
+                        { min: 2, message: 'Сокращенное наименование должно быть минимум в 2 символа', trigger: 'blur' }
+                    ]
+                }
+
             }
         },
         methods: {
             save(){
+                this.is_loading_action = true;
                 if(this.model.name_short !== ''){
 
                     if(this.model.inn !== ''){
@@ -274,6 +293,8 @@
                         register: val.state.registration_date,
                         status: val.state.status
                     };
+
+                    // this.hide_fields = this.model.type === "LEGAL";
                 });
             },
             goBack() {
