@@ -163,7 +163,7 @@
         </div>
 
         <template slot="card-footer-actions">
-            <el-button type="primary" icon="mdi mdi-content-save" @click="save()">Создать контрагента</el-button>
+            <el-button type="primary" icon="mdi mdi-content-save" :disabled="!model.type.length || model.name_short.length < 2" @click="save()">Создать контрагента</el-button>
         </template>
 
     </el-card-module>
