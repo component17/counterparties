@@ -236,6 +236,7 @@
                     });
                 }).then(() => {
                     this.is_loading_action = false;
+                    this.$router.push('/info/' + this.model.id);
                 });
             },
             sendData(object){
