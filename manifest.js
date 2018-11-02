@@ -24,6 +24,15 @@ module.exports = {
             name: 'counterparties_faces',
             indexes: ['counterparties_id'],
         },
+        {
+            name: 'ounterparties_bank_details',
+            indexes: ['counterparties_id'],
+        },
+        {
+            name: 'counterparties_locations',
+            indexes: ['counterparties_id'],
+        }
+
     ],
     permission: [
         {
