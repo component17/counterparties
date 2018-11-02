@@ -42,18 +42,19 @@
                     <!--<h2>Уставной капитал:</h2>-->
                     <!--<p>-</p>-->
                 <!--</div>-->
-                <div class="mainInfo__info-item">
-                    <h2>Метки:</h2>
-                    <div class="form__tags">
-                        <el-tag>Продукты питания</el-tag>
-                        <el-tag>Прочее</el-tag>
-                        <el-tag>Электроника</el-tag>
-                        <el-tag>Очень длинный тег</el-tag>
-                        <el-tag>Прочее</el-tag>
-                        <el-tag>Продукты питания</el-tag>
-                        <el-tag>Очень длинный тег</el-tag>
-                    </div>
-                </div>
+
+                <!--<div class="mainInfo__info-item">-->
+                    <!--<h2>Метки:</h2>-->
+                    <!--<div class="form__tags">-->
+                        <!--<el-tag>Продукты питания</el-tag>-->
+                        <!--<el-tag>Прочее</el-tag>-->
+                        <!--<el-tag>Электроника</el-tag>-->
+                        <!--<el-tag>Очень длинный тег</el-tag>-->
+                        <!--<el-tag>Прочее</el-tag>-->
+                        <!--<el-tag>Продукты питания</el-tag>-->
+                        <!--<el-tag>Очень длинный тег</el-tag>-->
+                    <!--</div>-->
+                <!--</div>-->
             </div>
         </div>
 
