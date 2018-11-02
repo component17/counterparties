@@ -16,7 +16,14 @@ module.exports = {
         }
     },
     databaseTables: [
-        'users'
+        {
+            name: 'counterparties',
+            indexes: [],
+        },
+        {
+            name: 'counterparties_faces',
+            indexes: ['counterparties_id'],
+        },
     ],
     permission: [
         {

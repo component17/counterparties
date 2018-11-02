@@ -270,7 +270,6 @@
             },
             handleSelect(item) {
                 let val = item.data;
-                console.log('Get data from dData: ', val);
                 this.$nextTick(() => {
 
                     this.model = {

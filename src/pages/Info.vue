@@ -17,7 +17,7 @@
             </el-tab-pane>
 
             <el-tab-pane label="Контактные лица">
-                <contactFaces></contactFaces>
+                <contactFaces :data="model.faces" :id="model.id"></contactFaces>
             </el-tab-pane>
 
             <el-tab-pane label="Банковские реквизиты">
@@ -84,7 +84,13 @@
         },
         methods: {
             getInfo(){
-                r.table('counterparties').get(this.id).run(conn, (err, data) => {
+                r.table('counterparties').get(this.id).merge((contr) => {
+                    return {
+                        faces: r.table("counterparties_faces").getAll(contr('id'), {index: 'counterparties_id'}).coerceTo('array'),
+                        banks: r.table("counterparties_bank_details").getAll(contr('id'), {index: 'counterparties_id'}).coerceTo('array'),
+                        locations: r.table("counterparties_locations").getAll(contr('id'), {index: 'counterparties_id'}).coerceTo('array'),
+                    }
+                }).run(conn, (err, data) => {
                     this.model = data;
                 })
             },

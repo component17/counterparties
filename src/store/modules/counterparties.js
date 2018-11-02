@@ -26,6 +26,18 @@ const store = {
         }
     },
     mutations: {
+        setListOneItem(state, val){
+            state.list.push(val);
+            state.list.sort((a, b) => {
+                if (a.name_short > b.name_short) {
+                    return 1;
+                }
+                if (a.name_short < b.name_short) {
+                    return -1;
+                }
+                return 0;
+            });
+        },
         setModel(state, val){
             state.model = {
                 name_full: val.name.full_with_opf,

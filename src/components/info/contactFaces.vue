@@ -7,28 +7,28 @@
         <div class="contanctFaces__table">
             <el-table
                     ref="multipleTable"
-                    :data="tableData3"
+                    :data="data"
                     style="width: 100%"
                     border>
+                <!--<el-table-column-->
+                        <!--type="selection"-->
+                        <!--width="55">-->
+                <!--</el-table-column>-->
                 <el-table-column
-                        type="selection"
-                        width="55">
-                </el-table-column>
-                <el-table-column
-                        label="Имя"
+                        label="ФИО"
                         sortable
                         show-overflow-tooltip>
-                    <template slot-scope="scope"><span class="contanctFacesName" @click="dialogVisible = true">{{ scope.row.name }}</span></template>
+                    <template slot-scope="scope"><span class="contanctFacesName" @click="selectFace(scope.$index)">{{ scope.row.name.full }}</span></template>
                 </el-table-column>
                 <el-table-column
-                        property="position"
+                        property="staff"
                         label="Должность"
                         show-overflow-tooltip>
                 </el-table-column>
                 <el-table-column
-                        property="mail"
                         label="E-mail"
                         show-overflow-tooltip>
+                    <template slot-scope="scope">{{ scope.row.emails.length ? scope.row.emails[0].value : ''}}</template>
                 </el-table-column>
                 <el-table-column
                         label="Действия"
@@ -53,23 +53,26 @@
             </el-pagination>
         </template>
         <template slot="card-footer-actions">
-            <el-button type="primary" @click="$router.push('/info/:id/contact-faces/create')"><i class="mdi mdi-account-plus"></i>Создать новое контактное лицо</el-button>
+            <el-button type="primary" @click="$router.push('/info/' + id + '/contact-faces/create')"><i class="mdi mdi-account-plus"></i>Создать новое контактное лицо</el-button>
         </template>
         <!--Информация о сотруднике-->
         <el-dialog
-                title="Иванов Иван Иванович"
+                :title="currentFace ? currentFace.name.full : ''"
                 :visible.sync="dialogVisible"
                 width="520px"
                 top="calc(50vh - 200px)"
                 class="contanctFaces__dialog">
             <div class="contanctFaces__dialog-info">
-                <div><i class="mdi mdi-account"></i>Старший менеджер</div>
-                <div><i class="mdi mdi-email"></i> iii@mail.ru <span>(Личная почта)</span></div>
-                <div><i class="mdi mdi-email"></i>iIvanovii@agent01.com</div>
-                <div><i class="mdi mdi-phone"></i>+74953335236 доб. 001</div>
-                <div><i class="mdi mdi-phone"></i>+79693332255 <span>(Личный, звонить с 9 до 18)</span></div>
-                <div><i class="mdi mdi-map-marker"></i>Москва, ул Железнодорожная 12/2 кв 47</div>
-                <div><i class="mdi mdi-dots-horizontal"></i>ivan_ivan <span>(Skype с 9 до 18)</span></div>
+
+                <div v-if="currentFace && currentFace.staff !== ''"><i class="mdi mdi-account"></i>{{ currentFace ? currentFace.staff : '' }}</div>
+
+                <div v-for="(item, index) in currentFace ? currentFace.emails : []"><i class="mdi mdi-email"></i> {{ item.value }} <span v-if="item.desc !== ''">({{ item.desc }})</span></div>
+
+                <div v-for="(item, index) in currentFace ? currentFace.phones : []"><i class="mdi mdi-phone"></i>{{ item.value }} <span v-if="item.desc !== ''">({{ item.desc }})</span></div>
+
+                <div v-for="(item, index) in currentFace ? currentFace.address : []"><i class="mdi mdi-map-marker"></i>{{ item.value }}</div>
+
+                <div v-for="(item, index) in currentFace ? currentFace.customsContacts : []"><i class="mdi mdi-dots-horizontal"></i>{{ item.value }} <span v-if="item.desc !== ''">({{ item.desc }})</span></div>
             </div>
             <span slot="footer" class="dialog-footer">
                 <el-button plain @click="dialogVisible = false"><i class="mdi mdi-pencil"></i>Редактировать</el-button>
@@ -80,9 +83,13 @@
 
 <script>
     export default {
+        props: ['data', 'id'],
         data() {
             return {
                 dialogVisible: false,
+
+                currentFace: null,
+
                 tableData3: [{
                     name: 'Петров Сергей',
                     position: 'Директор данного заведения',
@@ -97,6 +104,12 @@
                     mail: 'madilyn_hagenes@hotmail.com'
                 }],
                 multipleSelection: [],
+            }
+        },
+        methods: {
+            selectFace(index){
+                this.currentFace = this.data[index];
+                this.dialogVisible = true;
             }
         }
     }

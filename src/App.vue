@@ -108,6 +108,7 @@
                                     return 0;
                                 });
                             }
+                            this.$store.commit('contr/setListOneItem', data.new_val)
                         }
                     }
                 });
