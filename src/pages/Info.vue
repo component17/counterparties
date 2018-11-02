@@ -1,5 +1,7 @@
 <template>
+    <el-col style="width: 100%; height: 100vh;" v-if="is_loading_data" v-loading="true"></el-col>
     <el-card-module
+            v-else
             showHeader
             :title="model.name_short"
             btnBack
@@ -48,6 +50,7 @@
         },
         data(){
             return {
+                is_loading_data: false,
                 id: '',
                 model: {
                     name_full: '',
@@ -84,6 +87,8 @@
         },
         methods: {
             getInfo(){
+                this.is_loading_data = true;
+
                 r.table('counterparties').get(this.id).merge((contr) => {
                     return {
                         faces: r.table("counterparties_faces").getAll(contr('id'), {index: 'counterparties_id'}).coerceTo('array'),
@@ -92,7 +97,8 @@
                     }
                 }).run(conn, (err, data) => {
                     this.model = data;
-                })
+                    this.is_loading_data = false;
+                });
             },
 
             goBack(){
