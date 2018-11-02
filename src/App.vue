@@ -74,7 +74,7 @@
         created() {
             this.$store.dispatch('contr/getList').then((data) => {
                 this.tree = arrayToTree(data);
-            })
+            });
         },
         mounted() {
             this.$split(['#left', '#right'], {
@@ -82,6 +82,32 @@
                 minSize: [350, 600],
                 gutterSize: 8,
             });
+
+            r.table("counterparties").changes().run(conn, (err, cursor) => {
+                cursor.each((err, data) => {
+                    if(data){
+                        if(data.new_val && !data.old_val){
+                            console.log('CONTR CREATE', data.new_val);
+                            if(data.new_val.parent_id){
+                                console.log(this.$refs.tree);
+                                this.$refs.tree.append(data.new_val, data.new_val.parent_id);
+                            }
+                            else{
+                                this.tree.push(data.new_val);
+                                this.tree.sort((a, b) => {
+                                    if (a.name_short > b.name_short) {
+                                        return 1;
+                                    }
+                                    if (a.name_short < b.name_short) {
+                                        return -1;
+                                    }
+                                    return 0;
+                                });
+                            }
+                        }
+                    }
+                });
+            })
         },
         methods: {
             goBack() {

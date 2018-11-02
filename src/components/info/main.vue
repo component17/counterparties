@@ -1,11 +1,9 @@
 <template>
-    <el-card-module hiddenHeader>
+    <el-card-module hiddenHeader showFooter>
         <div class="mainInfo">
-            <div class="mainInfo__actions">
-                <el-button type="info"><i class="mdi mdi-printer"></i>Распечатать</el-button>
-                <el-button type="info" @click="$router.push('/info/' + $route.params.id + '/main/edit')"><i class="mdi mdi-pencil"></i>Редактировать</el-button>
-                <el-button type="info"><i class="mdi mdi-email-outline"></i>Отправить по почте</el-button>
-            </div>
+            <!--<div class="mainInfo__actions">-->
+                <!---->
+            <!--</div>-->
             <div class="mainInfo__info">
                 <div class="mainInfo__info-item">
                     <h2>Тип контрагента:</h2>
@@ -58,6 +56,15 @@
                 </div>
             </div>
         </div>
+
+        <template slot="card-footer">
+            <el-button type="info" @click="print()"><i class="mdi mdi-printer"></i>Распечатать</el-button>
+            <el-button type="info"><i class="mdi mdi-email-outline"></i>Отправить по почте</el-button>
+        </template>
+
+        <template slot="card-footer-actions">
+            <el-button type="primary" @click="$router.push('/info/' + $route.params.id + '/main/edit')"><i class="mdi mdi-pencil"></i>Редактировать</el-button>
+        </template>
     </el-card-module>
 </template>
 
@@ -75,6 +82,9 @@
         methods: {
             getTime(timestamp){
                 return `${moment(timestamp).format('DD.MM.YYYY')} (${moment(timestamp).fromNow()})`;
+            },
+            print(){
+                window.print()
             }
         }
     }
