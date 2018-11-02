@@ -20,20 +20,20 @@
                             <span class="custom-tree-node" slot-scope="{ node, data }">
                             <span>{{ data.name_short }}</span>
                             <div class="treeButtons">
-                                <el-button
-                                    type="text"
-                                    size="mini"
-                                    @click="editContragent(data.id)"
-                                >
-                                    <i class="mdi mdi-pencil"></i>
-                                </el-button>
-                                <el-button
-                                    type="text"
-                                    size="mini"
-                                    @click="goBack"
-                                >
-                                        <i class="mdi mdi-folder-plus"></i>
-                                </el-button>
+                                <!--<el-button-->
+                                    <!--type="text"-->
+                                    <!--size="mini"-->
+                                    <!--@click="editContragent(data.id)"-->
+                                <!--&gt;-->
+                                    <!--<i class="mdi mdi-pencil"></i>-->
+                                <!--</el-button>-->
+                                <!--<el-button-->
+                                    <!--type="text"-->
+                                    <!--size="mini"-->
+                                    <!--@click="goBack"-->
+                                <!--&gt;-->
+                                        <!--<i class="mdi mdi-folder-plus"></i>-->
+                                <!--</el-button>-->
                             </div>
                             </span>
                         </el-tree>
@@ -118,7 +118,7 @@
             editContragent(id){
                 console.log('ID: ', id);
 
-                // this.$router.push('/info/' + id + '/main/edit');
+                this.$router.push('/info/' + id + '/main/edit');
             },
             goBack() {
                 console.log('click back btn')
