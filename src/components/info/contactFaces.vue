@@ -106,12 +106,8 @@
                 multipleSelection: [],
             }
         },
-        created(){
-            console.log(this.data)
-        },
         methods: {
             selectFace(index){
-                console.log(index);
                 this.currentFace = this.data[index];
                 this.dialogVisible = true;
             }

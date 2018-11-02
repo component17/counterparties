@@ -251,7 +251,6 @@
             },
             handleSelect(item) {
                 let val = item.data;
-                console.log(val);
                 this.$nextTick(() => {
 
                     this.model = {

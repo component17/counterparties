@@ -91,7 +91,6 @@
                         locations: r.table("counterparties_locations").getAll(contr('id'), {index: 'counterparties_id'}).coerceTo('array'),
                     }
                 }).run(conn, (err, data) => {
-                    console.log(data);
                     this.model = data;
                 })
             },
