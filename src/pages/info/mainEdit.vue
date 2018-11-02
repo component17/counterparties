@@ -8,17 +8,16 @@
     >
         <el-col style="width: 100%; height: 100vh;" v-if="is_loading_data" v-loading="true"></el-col>
         <div class="newCompany" v-else>
-            <div class="newCompany__search">
-                <div class="newCompany__search-title">
-                    <h2>Автоматическое заполнение реквизитов контрагента</h2>
-                    <span>{{ $route.params.id }}</span>
-                </div>
-                <div class="newCompany__search-input">
-                    <el-input placeholder="Введите название в свободной форме, адрес, ИНН или ОГРН"/>
-                </div>
+            <div class="newCompany__search" style="background: none;">
+                <!--<div class="newCompany__search-title">-->
+                    <!--<h2>Автоматическое заполнение реквизитов контрагента</h2>-->
+                <!--</div>-->
+                <!--<div class="newCompany__search-input">-->
+                    <!--<el-input placeholder="Введите название в свободной форме, адрес, ИНН или ОГРН" :disabled="is_loading_action"/>-->
+                <!--</div>-->
             </div>
             <div class="newCompany__form">
-                <el-form label-width="200px" label-position="left" :model="model" :rules="rules">
+                <el-form label-width="200px" label-position="left" :model="model" :rules="rules" :disabled="is_loading_action">
 
                     <el-form-item label="Родитель">
                         <el-select v-model="model.parent_id" filterable :default-first-option="false">
@@ -156,7 +155,13 @@
 
         <template slot="card-footer-actions">
             <!--<el-button type="primary" icon="mdi mdi-content-save">Создать контрагента</el-button>-->
-            <el-button type="primary" icon="mdi mdi-content-save" :disabled="is_loading_data || !model.type.length || model.name_short.length < 2" @click="update">Сохранить изменения</el-button>
+            <el-button
+                type="primary"
+                icon="mdi mdi-content-save"
+                :loading="is_loading_action"
+                :disabled="is_loading_data || !model.type.length || model.name_short.length < 2"
+                @click="updateInfo"
+            >Сохранить изменения</el-button>
         </template>
 
     </el-card-module>
@@ -175,6 +180,7 @@
                 showSearch: false,
 
                 is_loading_data: false,
+                is_loading_action: false,
                 model: null,
 
                 rules: {
@@ -209,11 +215,36 @@
                     });
                 })
             },
-            update(){
+            updateInfo(){
+                this.is_loading_action = true;
+
                 if(this.model.type === 'INDIVIDUAL'){
                     this.model.kpp = this.model.management.name = this.model.management.post = '';
                 }
-                console.log('Data to save: ', this.model);
+
+                this.sendData(this.model).then(res => {
+                    this.$notify.success({
+                        title: 'Успешно',
+                        message: 'Данные были изменены',
+                        duration: 1750
+                    });
+                }).catch(error => {
+                    this.$notify.error({
+                        title: 'Ошибка',
+                        message: 'Произошла ошибка, повторите операцию позже',
+                        duration: 1750
+                    });
+                }).then(() => {
+                    this.is_loading_action = false;
+                });
+            },
+            sendData(object){
+                return new Promise((resolve, reject) => {
+                    r.table('counterparties').get(object.id).update(object).run(conn, (err, data) => {
+                        if(err) reject(err);
+                        resolve(data);
+                    });
+                })
             },
 
 

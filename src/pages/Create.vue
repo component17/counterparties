@@ -22,12 +22,13 @@
                             :trigger-on-focus="false"
                             @select="handleSelect"
                             style="width: 100%"
+                            :disabled="is_loading_action"
                     ></el-autocomplete>
 
                 </div>
             </div>
             <div class="newCompany__form">
-                <el-form label-width="200px" label-position="left" :model="model" :rules="rules">
+                <el-form label-width="200px" label-position="left" :model="model" :rules="rules" :disabled="is_loading_action">
 
                     <el-form-item label="Родитель">
                         <el-select v-model="model.parent_id" filterable :default-first-option="false">
@@ -163,7 +164,13 @@
         </div>
 
         <template slot="card-footer-actions">
-            <el-button type="primary" icon="mdi mdi-content-save" :disabled="!model.type.length || model.name_short.length < 2" @click="save()">Создать контрагента</el-button>
+            <el-button
+                type="primary"
+                icon="mdi mdi-content-save"
+                :loading="is_loading_action"
+                :disabled="!model.type.length || model.name_short.length < 2"
+                @click="save()"
+            >Создать контрагента</el-button>
         </template>
 
     </el-card-module>
@@ -175,6 +182,7 @@
         watch: { },
         data() {
             return {
+                is_loading_action: false,
                 autocomplete: '',
 
                 model: {
@@ -221,6 +229,7 @@
         },
         methods: {
             save(){
+                this.is_loading_action = true;
                 if(this.model.name_short !== ''){
 
                     if(this.model.inn !== ''){
