@@ -132,74 +132,6 @@
 
                 </el-form>
 
-                <!--<el-form label-width="200px" label-position="left" v-if="typeContractor === 'INDIVIDUAL'">-->
-                    <!--<el-form-item label="Тип контрагента" required>-->
-                        <!--<el-select v-model="typeContractor" placeholder="Тип контрагента">-->
-                            <!--<el-option value="LEGAL" label="Юридическое лицо">-->
-                                <!--Юридическое лицо-->
-                            <!--</el-option>-->
-                            <!--<el-option value="INDIVIDUAL" label="Физическое лицо">-->
-                                <!--Физическое лицо-->
-                            <!--</el-option>-->
-                        <!--</el-select>-->
-                    <!--</el-form-item>-->
-                    <!--<el-form-item label="Наименование или ФИО" required>-->
-                        <!--<el-input/>-->
-                    <!--</el-form-item>-->
-                    <!--<el-form-item label="Юридическое наименование">-->
-                        <!--<el-input/>-->
-                    <!--</el-form-item>-->
-                    <!--<el-form-item label="Адрес">-->
-                        <!--<el-input/>-->
-                    <!--</el-form-item>-->
-                    <!--<el-form-item label="ОГРН / ИНН / КПП">-->
-                        <!--<div class="form__inputsGroup">-->
-                            <!--<el-input placeholder="ОГРН"/>-->
-                            <!--<el-input placeholder="ИНН"/>-->
-                            <!--<el-input placeholder="КПП"/>-->
-                        <!--</div>-->
-                        <!--<span class="formInfo" v-if="completed">Cв-во о регистрации № 77 015267558 от 20.12.2013, ИФНС 7746</span>-->
-                    <!--</el-form-item>-->
-                    <!--<el-form-item label="Дата регистрации">-->
-                        <!--<div class="form__smallInput">-->
-                            <!--<el-date-picker-->
-                                    <!--v-model="dateRegister"-->
-                                    <!--type="date"-->
-                                    <!--placeholder="Выберите дату">-->
-                            <!--</el-date-picker>-->
-                        <!--</div>-->
-                        <!--<span class="formInfo" v-if="completed">Действующая организация</span>-->
-                    <!--</el-form-item>-->
-                    <!--<el-form-item>-->
-                        <!--<template slot="label">-->
-                            <!--Теги-->
-                            <!--<el-tooltip content="Теги используются для быстрой идентификации вида деятельности компании" placement="top">-->
-                                <!--<i class="mdi mdi-help-circle"></i>-->
-                            <!--</el-tooltip>-->
-                        <!--</template>-->
-                        <!--<div class="form__tags">-->
-                            <!--<el-tag-->
-                                    <!--:key="tag"-->
-                                    <!--v-for="tag in dynamicTags"-->
-                                    <!--closable-->
-                                    <!--:disable-transitions="false"-->
-                                    <!--@close="handleClose(tag)">-->
-                                <!--{{tag}}-->
-                            <!--</el-tag>-->
-                            <!--<el-input-->
-                                    <!--class="input-new-tag"-->
-                                    <!--v-if="inputVisible"-->
-                                    <!--v-model="inputValue"-->
-                                    <!--ref="saveTagInput"-->
-                                    <!--size="mini"-->
-                                    <!--@keyup.enter.native="handleInputConfirm"-->
-                                    <!--@blur="handleInputConfirm"-->
-                            <!--&gt;-->
-                            <!--</el-input>-->
-                            <!--<el-button v-else class="button-new-tag" @click="showInput" plain><i class="mdi mdi-plus"></i>Добавить тег</el-button>-->
-                        <!--</div>-->
-                    <!--</el-form-item>-->
-                <!--</el-form>-->
             </div>
             <div class="newCompany__formInfo" v-if="completed">
                 <h2>Дополнительная информация:</h2>
@@ -232,7 +164,6 @@
 
         <template slot="card-footer-actions">
             <el-button type="primary" icon="mdi mdi-content-save" @click="save()">Создать контрагента</el-button>
-            <!--<el-button type="primary" icon="mdi mdi-content-save">Сохранить изменения</el-button>-->
         </template>
 
     </el-card-module>
