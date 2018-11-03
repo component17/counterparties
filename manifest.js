@@ -2,7 +2,7 @@ module.exports = {
     name: "Контрагенты", // Наименование модуля
     desc: "Справочник контрагенты", // Описание модуля
     version: "0.0.1", // Текущая версия
-    namespace: 'counterparties', // Namspace нужен для разработки
+    namespace: 'counterparties', // Namespace нужен для разработки
     icon: "briefcase", // Иконка приложения в основном меню
     endpoint: {
         dev: {
