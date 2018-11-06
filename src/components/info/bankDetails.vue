@@ -1,27 +1,27 @@
 <template>
     <el-card-module class="banksInfo" showFooter>
-        <template slot="card-header-actions">
-            <el-input placeholder="Поиск"/>
-            <el-button plain><i class="mdi mdi-delete"></i>Удалить выбранные</el-button>
-        </template>
+        <!--<template slot="card-header-actions">-->
+            <!--<el-input placeholder="Поиск"/>-->
+            <!--<el-button plain><i class="mdi mdi-delete"></i>Удалить выбранные</el-button>-->
+        <!--</template>-->
         <div class="banksInfo__table">
             <el-table
                     ref="multipleTable"
-                    :data="tableData3"
+                    :data="data"
                     style="width: 100%"
                     border>
-                <el-table-column
-                        type="selection"
-                        width="55">
-                </el-table-column>
+                <!--<el-table-column-->
+                <!--type="selection"-->
+                <!--width="55">-->
+                <!--</el-table-column>-->
                 <el-table-column
                         label="Банк"
                         sortable
                         show-overflow-tooltip>
-                    <template slot-scope="scope"><span>{{ scope.row.bank }}</span></template>
+                    <template slot-scope="scope"><span>{{ scope.row.name.full }}</span></template>
                 </el-table-column>
                 <el-table-column
-                        property="number"
+                        property="checking_account"
                         label="Номер счета"
                         show-overflow-tooltip>
                 </el-table-column>
@@ -48,7 +48,8 @@
             </el-pagination>
         </template>
         <template slot="card-footer-actions">
-            <el-button type="primary" @click="$router.push('/info/:id/bank-details/create')"><i class="mdi mdi-account-plus"></i>Создать новый расчетный счет
+            <el-button type="primary" @click="$router.push('/info/' + id + '/bank-details/create')"><i
+                    class="mdi mdi-account-plus"></i>Создать новый расчетный счет
             </el-button>
         </template>
     </el-card-module>
@@ -56,8 +57,11 @@
 
 <script>
     export default {
+        props: ['data', 'id'],
         data() {
             return {
+
+
                 dialogVisible: false,
                 tableData3: [{
                     bank: 'ФИЛИАЛ N 11 ПАО МОСОБЛБАНК',

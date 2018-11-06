@@ -23,7 +23,7 @@
             </el-tab-pane>
 
             <el-tab-pane label="Банковские реквизиты">
-                <bankDetails></bankDetails>
+                <bankDetails :data="model.banks" :id="model.id"></bankDetails>
             </el-tab-pane>
 
             <el-tab-pane label="Локации">

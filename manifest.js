@@ -25,7 +25,7 @@ module.exports = {
             indexes: ['counterparties_id'],
         },
         {
-            name: 'ounterparties_bank_details',
+            name: 'counterparties_bank_details',
             indexes: ['counterparties_id'],
         },
         {
