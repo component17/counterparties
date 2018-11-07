@@ -7,14 +7,9 @@
         </template>
         <div class="location__table">
             <el-table
-                    ref="multipleTable"
-                    :data="tableData3"
+                    :data="data"
                     style="width: 100%"
                     border>
-                <el-table-column
-                        type="selection"
-                        width="55">
-                </el-table-column>
                 <el-table-column
                         label="Название"
                         sortable
@@ -22,7 +17,7 @@
                     <template slot-scope="scope"><span>{{ scope.row.name }}</span></template>
                 </el-table-column>
                 <el-table-column
-                        property="location"
+                        property="address"
                         label="Адрес"
                         show-overflow-tooltip>
                 </el-table-column>
@@ -40,16 +35,8 @@
             </el-table>
         </div>
 
-        <template slot="card-footer">
-            <el-pagination
-                    :page-sizes="[100, 200, 300, 400]"
-                    :page-size="100"
-                    layout="sizes, prev, pager, next"
-                    :total="400">
-            </el-pagination>
-        </template>
         <template slot="card-footer-actions">
-            <el-button type="primary" @click="$router.push('/info/:id/locations/create')"><i class="mdi mdi-account-plus"></i>Создать новую локацию</el-button>
+            <el-button type="primary" @click="$router.push('/info/' + id + '/locations/create')"><i class="mdi mdi-account-plus"></i>Создать новую локацию</el-button>
         </template>
         <!--Показать все на карте-->
         <el-dialog
@@ -68,6 +55,7 @@
 
 <script>
     export default {
+        props: ['data', 'id'],
         data() {
             return {
                 dialogVisible: false,

@@ -38,7 +38,7 @@
                             </span>
                         </el-tree>
                         <template slot="card-tree-footer">
-                            <el-input placehoder="Поиск" prefix-icon="el-icon-search" v-model="filterText"/>
+                            <el-input placeholder="Название или ИНН" prefix-icon="el-icon-search" v-model="filterText"/>
                         </template>
                     </el-card-tree>
                 </div>

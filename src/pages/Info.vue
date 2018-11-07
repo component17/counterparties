@@ -27,7 +27,7 @@
             </el-tab-pane>
 
             <el-tab-pane label="Локации">
-                <locations></locations>
+                <locations :data="model.locations" :id="model.id"></locations>
             </el-tab-pane>
 
         </el-tabs>
