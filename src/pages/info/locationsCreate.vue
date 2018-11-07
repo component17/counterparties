@@ -66,7 +66,9 @@
                     counterparties_id: this.$route.params.id
                 };
 
-                await upoint.map.geodecoder.toСoordinates(res.address);
+                let coordinate = await upoint.map.geodecoder.toСoordinates(res.address);
+
+                console.log(coordinate)
 
                 // r.table("counterparties_locations").insert(res).run(conn, (err, data) => {
                 //     this.$router.push('/info/' + this.$route.params.id)
