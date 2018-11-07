@@ -13,6 +13,8 @@ import 'upoint-vue-ui/assets/css/main.css'
 import './assets/main.css'
 
 
+
+
 Vue.use(uPoint, {size: 'mini', locale});
 
 Vue.config.productionTip = false;

@@ -24,11 +24,20 @@
                         property="staff"
                         label="Должность"
                         show-overflow-tooltip>
+                    <template slot-scope="scope">
+                        <span :class="{'empty__text': !scope.row.staff.length }">
+                            {{ scope.row.staff.length ? scope.row.staff : 'Не указанно' }}
+                        </span>
+                    </template>
                 </el-table-column>
                 <el-table-column
                         label="E-mail"
                         show-overflow-tooltip>
-                    <template slot-scope="scope">{{ scope.row.emails.length ? scope.row.emails[0].value : ''}}</template>
+                    <template slot-scope="scope">
+                        <span :class="{'empty__text': !scope.row.emails.length }">
+                            {{ scope.row.emails.length ? scope.row.emails[0].value : 'Не указанно' }}
+                        </span>
+                    </template>
                 </el-table-column>
                 <el-table-column
                         label="Действия"
@@ -115,6 +124,8 @@
     }
 </script>
 
-<style scoped>
-
+<style lang="scss">
+    .empty__text{
+        color: #9b9b9b;
+    }
 </style>
