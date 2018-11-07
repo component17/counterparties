@@ -21,15 +21,18 @@
                             :trigger-on-focus="false"
                             @select="handleSelect"
                             style="width: 100%"
+                            :disabled="is_loading_action"
                     ></el-autocomplete>
                 </div>
             </div>
             <div class="newContacts__form">
-                <el-form label-width="200px" label-position="left">
+                <el-form label-width="200px" label-position="left" :disabled="is_loading_action">
                     <el-form-item label="ФИО" required>
                         <div class="form__inputsGroup">
-                            <el-input placeholder="Фамилия" v-model="model.name.surname"/>
-                            <el-input placeholder="Имя" v-model="model.name.name"/>
+                            <el-input placeholder="Имя" v-model="model.name.name" class="name" @blur="checkName('name')"/>
+                            <span class="form__inputs_error name__error">Имя должно быть минимум в 2 символа</span>
+                            <el-input placeholder="Фамилия" v-model="model.name.surname" class="surname" @blur="checkName('surname')"/>
+                            <span class="form__inputs_error surname__error">Фамилия должна быть минимум в 2 символа</span>
                             <el-input placeholder="Отчество" v-model="model.name.patronymic"/>
                         </div>
                     </el-form-item>
@@ -49,11 +52,12 @@
                         <el-input v-model="model.staff"/>
                     </el-form-item>
 
-                    <el-form-item label="E-mail">
+                    <el-form-item label="E-mail" >
                         <div class="formItem__add">
                             <div class="formItem__add-inputs" v-for="(item, index) in emails" :key="index">
                                 <div class="form__inputsGroup form__inputsGroupSmall">
-                                    <el-input v-model="emails[index].value"/>
+                                    <el-input type="email" v-model="emails[index].value" placeholder="Введите email" @blur="checkEmail(emails[index].value)" class="emails"></el-input>
+                                    <span class="form__inputs_error emails__error">Введите корретный email адрес</span>
                                     <el-input placeholder="Примечание" v-model="emails[index].desc"/>
                                 </div>
                                 <el-button plain @click.prevent="removeEmail(index)"><i class="mdi mdi-delete"></i></el-button>
@@ -68,8 +72,17 @@
                         <div class="formItem__add">
                             <div class="formItem__add-inputs" v-for="(item, index) in phones" :key="index">
                                 <div class="form__inputsGroup form__inputsGroupSmall">
-                                    <el-input v-model="phones[index].value"/>
-                                    <el-input placeholder="доб. номер" v-model="phones[index].ext"/>
+                                    <el-input
+                                        type="tel"
+                                        :minlength="4" :min="4"
+                                        v-model="phones[index].value"
+                                        v-mask="['+# (###) ###-##-##', '+## (###) ###-##-##', '+### (###) ###-##-##']"
+                                        placeholder="8 (999) 999-99-99"
+                                        @blur="checkPhone"
+                                        class="phones"
+                                    ></el-input>
+                                    <span class="form__inputs_error phones__error">Введите корретный номер</span>
+                                    <el-input type="number" placeholder="доб. номер" v-model="phones[index].ext"/>
                                     <el-input placeholder="Примечание" v-model="phones[index].desc"/>
                                 </div>
                                 <el-button plain @click.prevent="removePhone(index)"><i class="mdi mdi-delete"></i></el-button>
@@ -83,7 +96,14 @@
                     <el-form-item label="Адрес">
                         <div class="formItem__add">
                             <div class="formItem__add-inputs" v-for="(item, index) in addresses" :key="index">
-                                <el-input placeholder="Адрес" v-model="addresses[index].value"/>
+                                <el-input
+                                    placeholder="Адрес"
+                                    :minlength="3"
+                                    :min="3"
+                                    v-model="addresses[index].value"
+                                    @blur="checkAddress"
+                                    class="addresses"></el-input>
+                                <span class="form__inputs_error addresses__error">Длина адреса должна быть минимум 3 символа</span>
                                 <el-button plain @click.prevent="removeAddress(index)"><i class="mdi mdi-delete"></i></el-button>
                             </div>
                             <div class="formItem__add-button">
@@ -96,7 +116,15 @@
                         <div class="formItem__add">
                             <div class="formItem__add-inputs" v-for="(item, index) in customsContacts" :key="index">
                                 <div class="form__inputsGroup form__inputsGroupSmall">
-                                    <el-input placeholder="Значение" v-model="customsContacts[index].value"/>
+                                    <el-input
+                                            placeholder="Значение"
+                                            :minlength="1"
+                                            :min="1"
+                                            v-model="customsContacts[index].value"
+                                            @blur="checkOther"
+                                            class="customsContacts"
+                                    ></el-input>
+                                    <span class="form__inputs_error customsContacts__error">Поле не может быть пустым</span>
                                     <el-input placeholder="Примечание" v-model="customsContacts[index].desc"/>
                                 </div>
                                 <el-button plain @click.prevent="removeCustom(index)"><i class="mdi mdi-delete"></i></el-button>
@@ -112,21 +140,23 @@
         </div>
 
         <template slot="card-footer-actions">
-            <el-button type="primary" @click="save()"><i class="mdi mdi-content-save"></i>Создать контактное лицо</el-button>
+            <el-button type="primary" @click="save()" :loading="is_loading_action"><i class="mdi mdi-content-save"></i>Создать контактное лицо</el-button>
         </template>
 
     </el-card-module>
 </template>
 
 <script>
+    import {mask} from 'vue-the-mask'
+
     export default {
+        directives: {mask},
         data() {
             return {
                 autocomplete: '',
 
                 model: {
                     name: {
-                        full: '',
                         patronymic: '',
                         surname: '',
                         name: ''
@@ -141,27 +171,168 @@
                 phones: [],
                 addresses: [],
                 customsContacts: [],
+
+                is_valid_form: false,
+                is_loading_action: false
             }
         },
-        created(){
-        },
+        computed: { },
+        watch: { },
+        created(){ },
         methods: {
+            checkName(field){
+                if(this.model.name[field].length >= 2){
+                    this.showHideError(field, 0, true);
+                    return true;
+                }else{
+                    this.showHideError(field, 0, false);
+                    return false;
+                }
+
+            },
+            checkEmail(){
+                let regexp = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+                let length = this.emails.length;
+                let passed = 0;
+
+                for(let i in this.emails){
+                    if(regexp.test(String(this.emails[i].value).toLowerCase())){
+                        this.showHideError('emails', i, true);
+                        passed = passed + 1;
+                    }else{
+                        this.showHideError('emails', i, false);
+                    }
+                }
+
+                return passed === length;
+            },
+            checkPhone(){
+                let passed = 0;
+                let length = this.phones.length;
+
+                for(let i in this.phones){
+                    if(this.phones[i].value.length >= 18){
+                        this.showHideError('phones', i, true);
+                        passed = passed + 1;
+                    }else{
+                        this.showHideError('phones', i, false);
+                    }
+                }
+
+                return passed === length;
+            },
+            checkAddress(){
+                let passed = 0;
+                let length = this.addresses.length;
+
+                for(let i in this.addresses){
+                    if(this.addresses[i].value.length >= 3){
+                        this.showHideError('addresses', i, true);
+                        passed = passed + 1;
+                    }else{
+                        this.showHideError('addresses', i, false);
+                    }
+                }
+
+                return passed === length;
+            },
+            checkOther(){
+                let passed = 0;
+                let length = this.customsContacts.length;
+
+                for(let i in this.customsContacts){
+                    if(this.customsContacts[i].value.length >= 1){
+                        this.showHideError('customsContacts', i, true);
+                        passed = passed + 1;
+                    }else{
+                        this.showHideError('customsContacts', i, false);
+                    }
+                }
+
+                return passed === length;
+            },
+
+            showHideError(name, index, passed = false){
+                let input = document.querySelectorAll(`.${name}`)[index].children[0];
+                let error = document.querySelectorAll(`.${name}__error`)[index];
+
+                if(passed){
+                    input.style.borderColor = '#12c461';
+                    error.style.opacity = 0;
+                }else{
+                    if(name === 'name' || name === 'surname'){
+                        if(name === 'name'){
+                            input.style.borderColor = '#bc0000';
+                            error.style.opacity = 1;
+                            document.querySelectorAll(`.surname__error`)[0].style.opacity = 0;
+                        }else{
+                            input.style.borderColor = '#bc0000';
+                            error.style.opacity = 1;
+                            document.querySelectorAll(`.name__error`)[0].style.opacity = 0;
+                        }
+                    }else{
+                        input.style.borderColor = '#bc0000';
+                        error.style.opacity = 1;
+                    }
+                }
+            },
+
+            showErrorFields(array, indexes){},
+            showValidFields(array){},
+
+
+
+
+
             save(){
-                let req = {
-                    emails: this.emails,
-                    phones: this.phones,
-                    addresses: this.addresses,
-                    customsContacts: this.customsContacts,
-                    counterparties_id: this.$route.params.id
-                };
+                this.is_loading_action = true;
 
-                let res = Object.assign(req, this.model);
+                if(
+                    this.checkName('name') &&
+                    this.checkName('surname') &&
+                    this.checkEmail() &&
+                    this.checkPhone() &&
+                    this.checkAddress() &&
+                    this.checkOther())
+                {
+                    let req = {
+                        emails: this.emails,
+                        phones: this.phones,
+                        addresses: this.addresses,
+                        customsContacts: this.customsContacts,
+                        counterparties_id: this.$route.params.id
+                    };
 
-                r.table("counterparties_faces").insert(res).run(conn, (err, data) => {
-                    this.$router.push('/info/' + this.$route.params.id)
-                });
+                    let res = Object.assign(req, this.model);
 
-                console.log(res)
+                    res.name.full = `${res.name.surname} ${res.name.name}${res.name.patronymic.length ? ' ' + res.name.patronymic : ''}`;
+
+                    r.table("counterparties_faces").insert(res).run(conn, (err, data) => {
+                        this.$router.push('/info/' + this.$route.params.id)
+                    }).then(() => {
+                        console.log('all passed')
+                        this.is_loading_action = false;
+                    });
+                }else{
+                    this.is_loading_action = false;
+                }
+
+
+                // let req = {
+                //     emails: this.emails,
+                //     phones: this.phones,
+                //     addresses: this.addresses,
+                //     customsContacts: this.customsContacts,
+                //     counterparties_id: this.$route.params.id
+                // };
+                //
+                // let res = Object.assign(req, this.model);
+                //
+                // r.table("counterparties_faces").insert(res).run(conn, (err, data) => {
+                //     this.$router.push('/info/' + this.$route.params.id)
+                // });
+
+                // console.log(res)
             },
 
             addEmail(){
@@ -222,7 +393,6 @@
 
                     this.model = {
                         name: {
-                            full: `${val.surname} ${val.name} ${val.patronymic}`,
                             patronymic: val.patronymic,
                             surname: val.surname,
                             name: val.name
@@ -242,6 +412,40 @@
     }
 </script>
 
-<style scoped>
+<style lang="scss">
+    input {
+        &::-webkit-outer-spin-button,
+        &::-webkit-inner-spin-button {
+            /* display: none; <- Crashes Chrome on hover */
+            -webkit-appearance: none;
+            margin: 0; /* <-- Apparently some margin are still there even though it's hidden */
+        }
+    }
+    .phone-code {
+        min-width: 60px;
+        width: 60px;
+        & > input {
+            width: 60px;
+            &::-webkit-outer-spin-button,
+            &::-webkit-inner-spin-button {
+                /* display: none; <- Crashes Chrome on hover */
+                -webkit-appearance: none;
+                margin: 0; /* <-- Apparently some margin are still there even though it's hidden */
+            }
+        }
+    }
+    .form__inputs_error{
+        display: block;
+        color: #bc0000;
+
+        font-size: 11px;
+        position: absolute;
+        top: 25px;
+        left: 15px;
+
+        opacity: 0;
+
+        transition: 0.3s ease;
+    }
 
 </style>

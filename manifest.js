@@ -32,7 +32,6 @@ module.exports = {
             name: 'counterparties_locations',
             indexes: ['counterparties_id'],
         }
-
     ],
     permission: [
         {

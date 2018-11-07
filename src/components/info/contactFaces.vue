@@ -24,11 +24,20 @@
                         property="staff"
                         label="Должность"
                         show-overflow-tooltip>
+                    <template slot-scope="scope">
+                        <span :class="{'empty__text': !scope.row.staff.length }">
+                            {{ scope.row.staff.length ? scope.row.staff : 'Не указанно' }}
+                        </span>
+                    </template>
                 </el-table-column>
                 <el-table-column
                         label="E-mail"
                         show-overflow-tooltip>
-                    <template slot-scope="scope">{{ scope.row.emails.length ? scope.row.emails[0].value : ''}}</template>
+                    <template slot-scope="scope">
+                        <span :class="{'empty__text': !scope.row.emails.length }">
+                            {{ scope.row.emails.length ? scope.row.emails[0].value : 'Не указанно' }}
+                        </span>
+                    </template>
                 </el-table-column>
                 <el-table-column
                         label="Действия"
@@ -36,7 +45,7 @@
                         align="center">
                     <template slot-scope="scope">
                         <div class="cell-buttons">
-                            <el-button type="text"><i class="mdi mdi-pencil"></i></el-button>
+                            <el-button type="text" @click="$router.push(`/info/${scope.row.id}/contact-faces/edit`)"><i class="mdi mdi-pencil"></i></el-button>
                             <el-button type="text"><i class="mdi mdi-delete"></i></el-button>
                         </div>
                     </template>
@@ -75,7 +84,7 @@
                 <div v-for="(item, index) in currentFace ? currentFace.customsContacts : []"><i class="mdi mdi-dots-horizontal"></i>{{ item.value }} <span v-if="item.desc !== ''">({{ item.desc }})</span></div>
             </div>
             <span slot="footer" class="dialog-footer">
-                <el-button plain @click="dialogVisible = false"><i class="mdi mdi-pencil"></i>Редактировать</el-button>
+                <el-button plain @click="$router.push(`/info/${currentFace.id}/contact-faces/edit`)"><i class="mdi mdi-pencil"></i>Редактировать</el-button>
             </span>
         </el-dialog>
     </el-card-module>
@@ -108,6 +117,7 @@
         },
         methods: {
             selectFace(index){
+                console.log(this.data[index]);
                 this.currentFace = this.data[index];
                 this.dialogVisible = true;
             }
@@ -115,6 +125,8 @@
     }
 </script>
 
-<style scoped>
-
+<style lang="scss">
+    .empty__text{
+        color: #9b9b9b;
+    }
 </style>
