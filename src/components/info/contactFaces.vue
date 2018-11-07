@@ -6,10 +6,12 @@
         </template>
         <div class="contanctFaces__table">
             <el-table
-                    ref="multipleTable"
-                    :data="data"
-                    style="width: 100%"
-                    border>
+                ref="multipleTable"
+                :data="data"
+                style="width: 100%"
+                border
+                :loading="is_loading_data"
+            >
                 <!--<el-table-column-->
                         <!--type="selection"-->
                         <!--width="55">-->
@@ -46,7 +48,7 @@
                     <template slot-scope="scope">
                         <div class="cell-buttons">
                             <el-button type="text" @click="$router.push(`/info/${scope.row.id}/contact-faces/edit`)"><i class="mdi mdi-pencil"></i></el-button>
-                            <el-button type="text"><i class="mdi mdi-delete"></i></el-button>
+                            <el-button type="text" @click="deleteContact(scope.$index)"><i class="mdi mdi-delete"></i></el-button>
                         </div>
                     </template>
                 </el-table-column>
@@ -95,6 +97,7 @@
         props: ['data', 'id'],
         data() {
             return {
+                is_loading_data: false,
                 dialogVisible: false,
 
                 currentFace: null,
@@ -116,11 +119,48 @@
             }
         },
         methods: {
+            deleteContact(index){
+                this.is_loading_data = true;
+
+                this.$confirm(`Вы действительно хотите удалить контакное лицо (${this.data[index].name.full})?`, 'Удаление', {
+                    confirmButtonText: 'Удалить',
+                    cancelButtonText: 'Отмена',
+                }).then(() => {
+                    this.deleteMethod(this.data[index]).then(res => {
+                        console.log(res);
+                        this.$notify.success({
+                            title: 'Успешно',
+                            message: 'Контактное лицо было удалено',
+                            duration: 1750
+                        });
+
+                        this.data.splice(index, 1);
+                    }).catch(error => {
+                        this.$notify.error({
+                            title: 'Ошибка',
+                            message: 'Произошла ошибка, повторите операцию позже',
+                            duration: 1750
+                        });
+                    }).then(() => {
+                        this.is_loading_data = false;
+                    });
+                });
+
+
+            },
             selectFace(index){
-                console.log(this.data[index]);
                 this.currentFace = this.data[index];
                 this.dialogVisible = true;
-            }
+            },
+            deleteMethod(object){
+                return new Promise((resolve, reject) => {
+                    r.table("counterparties_faces").get(object.id).delete().run(conn, (err, data) => {
+                        if(err) reject(err);
+                        resolve(data);
+                    });
+                });
+            },
+            // update
         }
     }
 </script>
