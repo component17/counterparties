@@ -1,8 +1,8 @@
 module.exports = {
     name: "Контрагенты", // Наименование модуля
     desc: "Справочник контрагенты", // Описание модуля
-    version: "0.0.2", // Текущая версия
-    namespace: 'counterparties', // Namspace нужен для разработки
+    version: "0.0.1", // Текущая версия
+    namespace: 'counterparties', // Namespace нужен для разработки
     icon: "briefcase", // Иконка приложения в основном меню
     endpoint: {
         dev: {
@@ -25,7 +25,7 @@ module.exports = {
             indexes: ['counterparties_id'],
         },
         {
-            name: 'ounterparties_bank_details',
+            name: 'counterparties_bank_details',
             indexes: ['counterparties_id'],
         },
         {

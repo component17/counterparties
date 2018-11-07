@@ -129,7 +129,13 @@
             filter(value, data) {
                 if (!value) return true;
                 let str = data.name_short.toLowerCase();
-                return str.indexOf(value.toLowerCase()) !== -1;
+
+                if(data.inn){
+                    return str.indexOf(value.toLowerCase()) !== -1 || data.inn.indexOf(value) !== -1;
+                }
+                else{
+                    return str.indexOf(value.toLowerCase()) !== -1;
+                }
             }
         }
     }

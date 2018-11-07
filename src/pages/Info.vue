@@ -23,7 +23,7 @@
             </el-tab-pane>
 
             <el-tab-pane label="Банковские реквизиты">
-                <bankDetails></bankDetails>
+                <bankDetails :data="model.banks" :id="model.id"></bankDetails>
             </el-tab-pane>
 
             <el-tab-pane label="Локации">
@@ -87,7 +87,9 @@
         },
         methods: {
             getInfo(){
-                this.is_loading_data = true;
+                let interval = setTimeout(() => {
+                    this.is_loading_data = true;
+                }, 500);
 
                 r.table('counterparties').get(this.id).merge((contr) => {
                     return {
@@ -96,6 +98,10 @@
                         locations: r.table("counterparties_locations").getAll(contr('id'), {index: 'counterparties_id'}).coerceTo('array'),
                     }
                 }).run(conn, (err, data) => {
+                    if(interval){
+                        clearTimeout(interval);
+                    }
+
                     this.model = data;
                     this.is_loading_data = false;
                 });
