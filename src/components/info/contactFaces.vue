@@ -127,7 +127,6 @@
                     cancelButtonText: 'Отмена',
                 }).then(() => {
                     this.deleteMethod(this.data[index]).then(res => {
-                        console.log(res);
                         this.$notify.success({
                             title: 'Успешно',
                             message: 'Контактное лицо было удалено',
@@ -145,8 +144,6 @@
                         this.is_loading_data = false;
                     });
                 });
-
-
             },
             selectFace(index){
                 this.currentFace = this.data[index];
@@ -159,8 +156,7 @@
                         resolve(data);
                     });
                 });
-            },
-            // update
+            }
         }
     }
 </script>

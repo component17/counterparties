@@ -9,7 +9,8 @@
                     ref="multipleTable"
                     :data="data"
                     style="width: 100%"
-                    border>
+                    border
+                    :loading="is_loading_data">
                 <!--<el-table-column-->
                 <!--type="selection"-->
                 <!--width="55">-->
@@ -31,8 +32,8 @@
                         align="center">
                     <template slot-scope="scope">
                         <div class="cell-buttons">
-                            <el-button type="text"><i class="mdi mdi-pencil"></i></el-button>
-                            <el-button type="text"><i class="mdi mdi-delete"></i></el-button>
+                            <el-button type="text" @click="$router.push(`/info/${scope.row.id}/bank-details/edit`)"><i class="mdi mdi-pencil"></i></el-button>
+                            <el-button type="text" @click="deleteBank(scope.$index)"><i class="mdi mdi-delete"></i></el-button>
                         </div>
                     </template>
                 </el-table-column>
@@ -60,7 +61,7 @@
         props: ['data', 'id'],
         data() {
             return {
-
+                is_loading_data: false,
 
                 dialogVisible: false,
                 tableData3: [{
@@ -74,6 +75,42 @@
                     number: '40801000000000000052',
                 }],
                 multipleSelection: [],
+            }
+        },
+        methods: {
+            deleteBank(index){
+                this.is_loading_data = true;
+
+                this.$confirm(`Вы действительно хотите удалить банковский реквизит?`, 'Удаление', {
+                    confirmButtonText: 'Удалить',
+                    cancelButtonText: 'Отмена',
+                }).then(() => {
+                    this.deleteMethod(this.data[index]).then(res => {
+                        this.$notify.success({
+                            title: 'Успешно',
+                            message: 'Банковский реквизит был удален',
+                            duration: 1750
+                        });
+
+                        this.data.splice(index, 1);
+                    }).catch(error => {
+                        this.$notify.error({
+                            title: 'Ошибка',
+                            message: 'Произошла ошибка, повторите операцию позже',
+                            duration: 1750
+                        });
+                    }).then(() => {
+                        this.is_loading_data = false;
+                    });
+                });
+            },
+            deleteMethod(object){
+                return new Promise((resolve, reject) => {
+                    r.table("counterparties_bank_details").get(object.id).delete().run(conn, (err, data) => {
+                        if(err) reject(err);
+                        resolve(data);
+                    });
+                });
             }
         }
     }
