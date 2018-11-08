@@ -1,7 +1,7 @@
 <template>
     <el-card-module
             showHeader
-            title="Новый контрагент/Редактировать данные контрагента"
+            title="Новый контрагент"
             btnBack
             @goBack="goBack"
             showFooter
