@@ -108,7 +108,7 @@
                 this.sendData(res).then(result => {
                     this.$notify.success({
                         title: 'Успешно',
-                        message: 'Рассчетный счет был создан',
+                        message: 'Локация была создана',
                         duration: 1750
                     });
 

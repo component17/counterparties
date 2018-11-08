@@ -12,7 +12,7 @@ import 'upoint-vue-ui/assets/css/main.css'
 
 import './assets/main.css'
 
-
+Vue.prototype.$isDeveloper = process.env.NODE_ENV === 'development';
 
 
 Vue.use(uPoint, {size: 'mini', locale});
