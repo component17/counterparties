@@ -87,7 +87,7 @@
                     model.checking_account.length < 20
                 "
                 :loading="is_loading_action"
-            ><i class="mdi mdi-content-save"></i>Создать</el-button>
+            ><i class="mdi mdi-content-save"></i>Создать реквизит</el-button>
             <!--<el-button type="primary"><i class="mdi mdi-content-save"></i>Сохранить изменения</el-button>-->
         </template>
 

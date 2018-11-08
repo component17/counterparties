@@ -63,7 +63,7 @@ const store = {
     actions: {
         getList({state}){
             return new Promise((resolve, reject) => {
-                r.table('counterparties').orderBy('name_short').run(conn, (err, cursor) => {
+                r.table('counterparties').orderBy('name_short').filter({deletedAt: null}).run(conn, (err, cursor) => {
                     if(err){
                         return reject(err);
                     }

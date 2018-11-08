@@ -87,7 +87,6 @@
                     cancelButtonText: 'Отмена',
                 }).then(() => {
                     this.deleteMethod(this.data[index]).then(res => {
-                        console.log(res);
                         this.$notify.success({
                             title: 'Успешно',
                             message: 'Банковский реквизит был удален',
