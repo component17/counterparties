@@ -59,8 +59,8 @@
         </div>
 
         <template slot="card-footer">
-            <el-button type="info" @click="print()"><i class="mdi mdi-printer"></i>Распечатать</el-button>
-            <el-button type="info"><i class="mdi mdi-email-outline"></i>Отправить по почте</el-button>
+            <el-button type="info" @click="print()" v-if="$isDeveloper"><i class="mdi mdi-printer"></i>Распечатать</el-button>
+            <el-button type="info" v-if="$isDeveloper"><i class="mdi mdi-email-outline"></i>Отправить по почте</el-button>
         </template>
 
         <template slot="card-footer-actions">

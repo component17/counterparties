@@ -55,8 +55,9 @@
             </el-table>
         </div>
 
-        <template slot="card-footer">
+        <template slot="card-footer" >
             <el-pagination
+                    v-if="$isDeveloper"
                     :page-sizes="[100, 200, 300, 400]"
                     :page-size="100"
                     layout="sizes, prev, pager, next"

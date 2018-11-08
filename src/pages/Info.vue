@@ -8,8 +8,8 @@
             @goBack="goBack">
 
         <template slot="card-header-actions">
-            <el-button plain @click="deleteContr"><i class="mdi mdi-delete"></i>Удалить контрагента</el-button>
-            <el-button plain @click="$router.push('/create')"><i class="mdi mdi-plus"></i>Добавить филиал</el-button>
+            <el-button plain @click="deleteContr" v-if="$isDeveloper"><i class="mdi mdi-delete"></i>Удалить контрагента</el-button>
+            <el-button plain @click="$router.push('/create')" v-if="$isDeveloper"><i class="mdi mdi-plus"></i>Добавить филиал</el-button>
         </template>
 
         <el-tabs type="border-card">

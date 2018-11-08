@@ -170,6 +170,7 @@
 
                 let res = this.model;
                 res.counterparties_id = this.$route.params.id;
+                res.deletedAt = null;
 
                 this.sendData(res).then(result => {
                     this.$notify.success({

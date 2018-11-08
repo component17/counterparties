@@ -251,6 +251,7 @@
             },
 
             addDb(){
+                this.model.deletedAt = null;
                 r.table("counterparties").insert(this.model).run(conn, (err, data) => {
 
                     this.$router.push('/info/' + data.generated_keys[0])

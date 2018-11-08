@@ -300,7 +300,8 @@
                         phones: this.phones,
                         addresses: this.addresses,
                         customsContacts: this.customsContacts,
-                        counterparties_id: this.$route.params.id
+                        counterparties_id: this.$route.params.id,
+                        deletedAt: null
                     };
 
                     let res = Object.assign(req, this.model);
@@ -316,23 +317,6 @@
                 }else{
                     this.is_loading_action = false;
                 }
-
-
-                // let req = {
-                //     emails: this.emails,
-                //     phones: this.phones,
-                //     addresses: this.addresses,
-                //     customsContacts: this.customsContacts,
-                //     counterparties_id: this.$route.params.id
-                // };
-                //
-                // let res = Object.assign(req, this.model);
-                //
-                // r.table("counterparties_faces").insert(res).run(conn, (err, data) => {
-                //     this.$router.push('/info/' + this.$route.params.id)
-                // });
-
-                // console.log(res)
             },
 
             addEmail(){

@@ -42,6 +42,7 @@
 
         <template slot="card-footer">
             <el-pagination
+                    v-if="$isDeveloper"
                     :page-sizes="[100, 200, 300, 400]"
                     :page-size="100"
                     layout="sizes, prev, pager, next"
@@ -86,6 +87,7 @@
                     cancelButtonText: 'Отмена',
                 }).then(() => {
                     this.deleteMethod(this.data[index]).then(res => {
+                        console.log(res);
                         this.$notify.success({
                             title: 'Успешно',
                             message: 'Банковский реквизит был удален',
@@ -106,7 +108,7 @@
             },
             deleteMethod(object){
                 return new Promise((resolve, reject) => {
-                    r.table("counterparties_bank_details").get(object.id).delete().run(conn, (err, data) => {
+                    r.table("counterparties_bank_details").get(object.id).update({deletedAt: r.now()}).run(conn, (err, data) => {
                         if(err) reject(err);
                         resolve(data);
                     });

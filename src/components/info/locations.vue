@@ -27,7 +27,7 @@
                         align="center">
                     <template slot-scope="scope">
                         <div class="cell-buttons">
-                            <el-button type="text"><i class="mdi mdi-pencil"></i></el-button>
+                            <el-button type="text" @click="$router.push(`/info/${scope.row.id}/locations/edit`)"><i class="mdi mdi-pencil"></i></el-button>
                             <el-button type="text"><i class="mdi mdi-delete"></i></el-button>
                         </div>
                     </template>
