@@ -43,7 +43,7 @@
                     </el-card-tree>
                 </div>
                 <div id="right">
-                    <router-view></router-view>
+                    <router-view @deleteTreeItem="deleteOne"></router-view>
                 </div>
             </div>
 
@@ -87,13 +87,14 @@
                 gutterSize: 8,
             });
 
+            console.log(this.$store.state.contr.list);
+
             r.table("counterparties").changes().run(conn, (err, cursor) => {
                 cursor.each((err, data) => {
                     if(data){
                         if(data.new_val && !data.old_val){
                             console.log('CONTR CREATE', data.new_val);
                             if(data.new_val.parent_id){
-                                console.log(this.$refs.tree);
                                 this.$refs.tree.append(data.new_val, data.new_val.parent_id);
                             }
                             else{
@@ -115,9 +116,14 @@
             })
         },
         methods: {
+            deleteOne(model){
+                let list = this.$store.state.contr.list;
+                // for(let i in list){
+                //     if(model.id === )
+                // }
+                this.$refs.tree.remove(model);
+            },
             editContragent(id){
-                console.log('ID: ', id);
-
                 this.$router.push('/info/' + id + '/main/edit');
             },
             goBack() {

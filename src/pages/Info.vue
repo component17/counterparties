@@ -4,12 +4,12 @@
             v-else
             showHeader
             :title="model.name_short"
-            btnBack
+
             @goBack="goBack">
 
         <template slot="card-header-actions">
-            <el-button plain @click="deleteContr" v-if="$isDeveloper"><i class="mdi mdi-delete"></i>Удалить контрагента</el-button>
-            <el-button plain @click="$router.push(`/create?parent_id=${model.id}`)" v-if="$isDeveloper"><i class="mdi mdi-plus"></i>Добавить филиал</el-button>
+            <el-button plain @click="deleteContr"><i class="mdi mdi-delete"></i>Удалить контрагента</el-button>
+            <el-button plain @click="$router.push(`/create?parent_id=${model.id}`)"><i class="mdi mdi-plus"></i>Добавить филиал</el-button>
         </template>
 
         <el-tabs type="border-card">
@@ -115,17 +115,37 @@
                     confirmButtonText: 'Удалить',
                     cancelButtonText: 'Отмена',
                 }).then(() => {
-                    this.$message({
-                        type: 'success',
-                        message: 'Delete completed'
-                    });
-                }).catch(() => {
-                    this.$message({
-                        type: 'info',
-                        message: 'Delete canceled'
+                    this.deleteMethod(this.model).then(res => {
+                        this.$notify.success({
+                            title: 'Успешно',
+                            message: 'Контрагент был удален',
+                            duration: 1750
+                        });
+
+                        this.$emit('deleteTreeItem', this.model);
+                        // this.data.splice(index, 1);
+                    }).catch(error => {
+                        this.$notify.error({
+                            title: 'Ошибка',
+                            message: 'Произошла ошибка, повторите операцию позже',
+                            duration: 1750
+                        });
+                    }).then(() => {
+                        this.$router.push('/');
+                        // this.is_loading_data = false;
                     });
                 });
-            }
+            },
+            deleteMethod(object){
+                return new Promise((resolve, reject) => {
+                    r.table('counterparties').get(object.id).update({deletedAt: r.now()}).run(conn, (err, data) => {
+                        if(err) reject(err);
+
+                        resolve(data);
+                    })
+                })
+            },
+            deleteOne(object){}
         }
     }
 </script>
