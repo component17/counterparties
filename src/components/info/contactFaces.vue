@@ -103,19 +103,6 @@
 
                 currentFace: null,
 
-                tableData3: [{
-                    name: 'Петров Сергей',
-                    position: 'Директор данного заведения',
-                    mail: ' great80@gmail.com'
-                }, {
-                    name: 'Алексеева Светлана Николаевна',
-                    position: 'Менеджер по закупкам',
-                    mail: 'valentin.runolfsson@erdman.net'
-                }, {
-                    name: 'Корабельников Анатолий Аристархович',
-                    position: 'Старший менеджер',
-                    mail: 'madilyn_hagenes@hotmail.com'
-                }],
                 multipleSelection: [],
             }
         },
@@ -152,7 +139,7 @@
             },
             deleteMethod(object){
                 return new Promise((resolve, reject) => {
-                    r.table("counterparties_faces").get(object.id).delete().run(conn, (err, data) => {
+                    r.table("counterparties_faces").get(object.id).update({deletedAt: r.now()}).run(conn, (err, data) => {
                         if(err) reject(err);
                         resolve(data);
                     });

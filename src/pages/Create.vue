@@ -101,7 +101,7 @@
                         <!--</div>-->
                     <!--</el-form-item>-->
 
-                    <el-form-item>
+                    <el-form-item v-if="$isDeveloper">
                         <template slot="label">
                             Теги
                             <el-tooltip content="Теги используются для быстрой идентификации вида деятельности компании" placement="top">
@@ -225,6 +225,11 @@
                     ]
                 }
 
+            }
+        },
+        created(){
+            if(this.$route.query.parent_id){
+                this.model.parent_id = this.$route.query.parent_id;
             }
         },
         methods: {

@@ -9,7 +9,9 @@
             <el-table
                     :data="data"
                     style="width: 100%"
-                    border>
+                    border
+                    :loading="is_loading_data"
+            >
                 <el-table-column
                         label="Название"
                         sortable
@@ -28,7 +30,7 @@
                     <template slot-scope="scope">
                         <div class="cell-buttons">
                             <el-button type="text" @click="$router.push(`/info/${scope.row.id}/locations/edit`)"><i class="mdi mdi-pencil"></i></el-button>
-                            <el-button type="text"><i class="mdi mdi-delete"></i></el-button>
+                            <el-button type="text" @click="deleteLocation(scope.$index)"><i class="mdi mdi-delete"></i></el-button>
                         </div>
                     </template>
                 </el-table-column>
@@ -58,18 +60,45 @@
         props: ['data', 'id'],
         data() {
             return {
+                is_loading_data: false,
                 dialogVisible: false,
-                tableData3: [{
-                    name: 'Самый большой склад',
-                    location: '663100, с Казачинское, ул Горького, д 10 ',
-                }, {
-                    name: 'Головной офис',
-                    location: '399608, г Новомичуринск, ул Автозаводская, д 14, кв/оф 231',
-                }, {
-                    name: 'Склад интернет-магазина',
-                    location: '412645, г Киров, ул Абрамцевская, д 69, кв/оф 97',
-                }],
                 multipleSelection: [],
+            }
+        },
+        methods: {
+            deleteLocation(index){
+                this.is_loading_data = true;
+
+                this.$confirm(`Вы действительно хотите удалить локацию?`, 'Удаление', {
+                    confirmButtonText: 'Удалить',
+                    cancelButtonText: 'Отмена',
+                }).then(() => {
+                    this.deleteMethod(this.data[index]).then(res => {
+                        this.$notify.success({
+                            title: 'Успешно',
+                            message: 'Локация была удалена',
+                            duration: 1750
+                        });
+
+                        this.data.splice(index, 1);
+                    }).catch(error => {
+                        this.$notify.error({
+                            title: 'Ошибка',
+                            message: 'Произошла ошибка, повторите операцию позже',
+                            duration: 1750
+                        });
+                    }).then(() => {
+                        this.is_loading_data = false;
+                    });
+                });
+            },
+            deleteMethod(object){
+                return new Promise((resolve, reject) => {
+                    r.table("counterparties_locations").get(object.id).update({deletedAt: r.now()}).run(conn, (err, data) => {
+                        if(err) reject(err);
+                        resolve(data);
+                    });
+                });
             }
         }
     }

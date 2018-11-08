@@ -9,7 +9,7 @@
 
         <template slot="card-header-actions">
             <el-button plain @click="deleteContr" v-if="$isDeveloper"><i class="mdi mdi-delete"></i>Удалить контрагента</el-button>
-            <el-button plain @click="$router.push('/create')" v-if="$isDeveloper"><i class="mdi mdi-plus"></i>Добавить филиал</el-button>
+            <el-button plain @click="$router.push(`/create?parent_id=${model.id}`)" v-if="$isDeveloper"><i class="mdi mdi-plus"></i>Добавить филиал</el-button>
         </template>
 
         <el-tabs type="border-card">
@@ -93,9 +93,9 @@
 
                 r.table('counterparties').get(this.id).merge((contr) => {
                     return {
-                        faces: r.table("counterparties_faces").getAll(contr('id'), {index: 'counterparties_id'}).coerceTo('array'),
-                        banks: r.table("counterparties_bank_details").getAll(contr('id'), {index: 'counterparties_id'}).coerceTo('array'),
-                        locations: r.table("counterparties_locations").getAll(contr('id'), {index: 'counterparties_id'}).coerceTo('array'),
+                        faces: r.table("counterparties_faces").getAll(contr('id'), {index: 'counterparties_id'}).filter({deletedAt: null}).coerceTo('array'),
+                        banks: r.table("counterparties_bank_details").getAll(contr('id'), {index: 'counterparties_id'}).filter({deletedAt: null}).coerceTo('array'),
+                        locations: r.table("counterparties_locations").getAll(contr('id'), {index: 'counterparties_id'}).filter({deletedAt: null}).coerceTo('array'),
                     }
                 }).run(conn, (err, data) => {
                     if(interval){

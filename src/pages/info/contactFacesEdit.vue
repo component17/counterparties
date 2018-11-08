@@ -126,7 +126,7 @@
         </div>
 
         <template slot="card-footer-actions">
-            <el-button type="primary" @click="save()" :disabled="is_loading_data" :loading="is_loading_action"><i class="mdi mdi-content-save"></i>Изменить контактное лицо</el-button>
+            <el-button type="primary" @click="save()" :disabled="is_loading_data" :loading="is_loading_action"><i class="mdi mdi-content-save"></i>Сохранить изменения</el-button>
         </template>
 
     </el-card-module>

@@ -47,7 +47,7 @@
                     type="primary"
                     :disabled="model.address.length < 3 || model.name.length < 3"
                     :loading="is_loading_action"
-                    @click="save"><i class="mdi mdi-content-save"></i>Создать локацию</el-button>
+                    @click="save"><i class="mdi mdi-content-save"></i>Сохранить изменения</el-button>
             <!--<el-button type="primary"><i class="mdi mdi-content-save"></i>Сохранить изменения</el-button>-->
         </template>
 
