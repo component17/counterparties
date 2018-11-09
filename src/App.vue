@@ -88,8 +88,6 @@
                 gutterSize: 8,
             });
 
-            console.log(this.$store.state.contr.list);
-
             r.table("counterparties").changes().run(conn, (err, cursor) => {
                 cursor.each((err, data) => {
                     if(data){
