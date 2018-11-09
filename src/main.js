@@ -20,6 +20,12 @@ Vue.use(uPoint, {size: 'mini', locale});
 Vue.config.productionTip = false;
 
 upoint.db.connect().then(() => {
+
+    // r.tableDrop('counterparties').run(conn)
+    // r.tableDrop('counterparties_faces').run(conn)
+    // r.tableDrop('counterparties_bank_details').run(conn)
+    // r.tableDrop('counterparties_locations').run(conn)
+
     // r.tableCreate('counterparties').run(conn, () => {
     //     console.log('Table create counterparties')
     // });
