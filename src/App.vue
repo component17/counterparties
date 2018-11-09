@@ -43,7 +43,8 @@
                     </el-card-tree>
                 </div>
                 <div id="right">
-                    <router-view @deleteTreeItem="deleteOne"></router-view>
+                    <router-view ></router-view>
+                    <!--@deleteTreeItem="deleteOne"-->
                 </div>
             </div>
 
@@ -110,6 +111,18 @@
                                 });
                             }
                             this.$store.commit('contr/setListOneItem', data.new_val)
+                        }else if(data.new_val && data.old_val){
+                            if(data.new_val.deletedAt !== null){
+                                this.$refs.tree.remove(data.new_val);
+
+                                this.$store.dispatch('contr/getList').then((data) => {
+                                    this.tree = arrayToTree(data);
+                                });
+                            }else{
+                                this.$store.dispatch('contr/getList').then((data) => {
+                                    this.tree = arrayToTree(data);
+                                });
+                            }
                         }
                     }
                 });
@@ -121,7 +134,7 @@
                 // for(let i in list){
                 //     if(model.id === )
                 // }
-                this.$refs.tree.remove(model);
+
             },
             editContragent(id){
                 this.$router.push('/info/' + id + '/main/edit');
