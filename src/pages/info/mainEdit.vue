@@ -199,6 +199,17 @@
             this.getInfo(this.$route.params.id).then(res => {
                 this.model = res;
                 this.is_loading_data = false;
+            }).then(() => {
+                let get_parrent = null;
+
+                for(let i in this.$store.state.contr.list){
+                    if(this.$store.state.contr.list[i].id === this.model.parent_id){
+                        get_parrent = this.model
+                    }
+                }
+                if(get_parrent === null){
+                    this.model.parent_id = null
+                }
             });
         },
         methods: {
