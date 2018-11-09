@@ -65,12 +65,12 @@
                             <el-input placeholder="ИНН" v-model="model.inn"/>
                             <el-input placeholder="КПП" v-model="model.kpp" v-if="model.type !== 'INDIVIDUAL'"/>
                         </div>
-                        <span class="formInfo" v-if="completed">Cв-во о регистрации № 77 015267558 от 20.12.2013, ИФНС 7746</span>
+                        <!--<span class="formInfo" v-if="completed">Cв-во о регистрации № 77 015267558 от 20.12.2013, ИФНС 7746</span>-->
                     </el-form-item>
 
                     <el-form-item label="Генеральный директор" v-if="model.type !== 'INDIVIDUAL'">
                         <el-input v-model="model.management.name"/>
-                        <span class="formInfo" v-if="completed">ИНН 325003630515</span>
+                        <!--<span class="formInfo" v-if="completed">ИНН 325003630515</span>-->
                     </el-form-item>
 
                     <el-form-item label="Дата регистрации">
@@ -82,7 +82,7 @@
                                     placeholder="Выберите дату">
                             </el-date-picker>
                         </div>
-                        <span class="formInfo" v-if="completed">Действующая организация</span>
+                        <!--<span class="formInfo" v-if="completed">Действующая организация</span>-->
                     </el-form-item>
 
                     <!--<el-form-item label="Уставной капитал">-->
@@ -124,7 +124,7 @@
 
                 </el-form>
             </div>
-            <div class="newCompany__formInfo" v-if="completed">
+            <div class="newCompany__formInfo" v-if="$isDeveloper">
                 <h2>Дополнительная информация:</h2>
                 <el-form label-width="150px" label-position="left">
                     <el-form-item label="Учредители">
