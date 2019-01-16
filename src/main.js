@@ -4,6 +4,7 @@ import Vue from 'vue'
 import App from './App'
 import router from './router'
 import store from './store/index';
+import * as Sentry from '@sentry/browser'
 
 import uPoint from 'upoint-vue-ui';
 import locale from 'upoint-vue-ui/locale/lang/ru-RU'
@@ -16,6 +17,18 @@ Vue.prototype.$isDeveloper = process.env.NODE_ENV === 'development';
 
 
 Vue.use(uPoint, {size: 'mini', locale});
+
+Sentry.init({
+    dsn: 'https://ed70a752cdfc4542a97bcebc9a68ad29@sentry.io/1372958',
+    integrations: [new Sentry.Integrations.Vue({ Vue })]
+});
+
+Vue.config.errorHandler = (err, vm, info) => {
+    // Обработка ошибки. В `info` подробности Vue-специфичной ошибки,
+    // например, в каком хуке жизненного цикла произошла ошибка.
+    // Доступно только в версиях 2.2.0+
+}
+
 
 Vue.config.productionTip = false;
 
