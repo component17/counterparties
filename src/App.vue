@@ -82,6 +82,8 @@
             });
         },
         mounted() {
+            upoint.module.ready();
+
             this.$split(['#left', '#right'], {
                 sizes: [30, 70],
                 minSize: [350, 600],
@@ -124,7 +126,7 @@
                         }
                     }
                 });
-            })
+            });
         },
         methods: {
             deleteOne(model){
